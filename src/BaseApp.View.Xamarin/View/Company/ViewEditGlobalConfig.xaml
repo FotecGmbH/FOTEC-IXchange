@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewEditGlobalConfig"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bc="clr-namespace:BaseApp.View.Xamarin.Controls;assembly=BaseApp.View.Xamarin"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resources="clr-namespace:Exchange.Resources;assembly=Exchange"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    xmlns:viewmodels="clr-namespace:BaseApp.ViewModel;assembly=BaseApp"
+    d:DataContext="{x:Static viewmodels:VmEditGlobalConfig.DesignInstance}"
+    x:TypeArguments="viewmodels:VmEditGlobalConfig"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl>
+
+        <!--#region View Content-->
+
+        <ScrollView>
+            <StackLayout Spacing="8">
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditGlobalConfig.LblTtnName}" />
+                    <bcc:BxEntry
+                        Grid.Column="1"
+                        EntryData="{Binding EntryName}"
+                        HasFrame="False" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditGlobalConfig.LblTtnDescription}" />
+                    <bcc:BxEntry
+                        Grid.Column="1"
+                        EntryData="{Binding EntryDescription}"
+                        HasFrame="False" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditGlobalConfig.LblTtnZone}" />
+                    <bcc:BxEntry
+                        Grid.Column="1"
+                        EntryData="{Binding EntryTtnZone}"
+                        HasFrame="False" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditGlobalConfig.LblTtnApiKey}" />
+                    <bcc:BxEntry
+                        Grid.Column="1"
+                        EntryData="{Binding EntryTtnApiKey}"
+                        HasFrame="False" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditGlobalConfig.LblTtnApplicationId}" />
+                    <bcc:BxEntry
+                        Grid.Column="1"
+                        EntryData="{Binding EntryTtnAppId}"
+                        HasFrame="False" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditGlobalConfig.LblTtnUserId}" />
+                    <bcc:BxEntry
+                        Grid.Column="1"
+                        EntryData="{Binding EntryTtnUserId}"
+                        HasFrame="False" />
+                </Grid>
+            </StackLayout>
+
+        </ScrollView>
+
+
+
+
+
+
+
+
+        <!--#endregion-->
+
+    </bcc:PageControl>
+</view:BissContentPage>

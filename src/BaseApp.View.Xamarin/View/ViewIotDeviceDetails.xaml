@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewIotDeviceDetails"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:bcm="http://biss.schemas.com/markupextensions"
+    xmlns:controls="clr-namespace:BaseApp.View.Xamarin.Controls;assembly=BaseApp.View.Xamarin"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    xmlns:viewmodels="clr-namespace:BaseApp.ViewModel;assembly=BaseApp"
+    d:DataContext="{x:Static viewmodels:VmIotDeviceDetails.DesignInstance}"
+    x:TypeArguments="viewmodels:VmIotDeviceDetails"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl>
+
+        <ScrollView Margin="8">
+            <StackLayout>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblName}" />
+                    <Label Grid.Column="1" Text="{Binding Data.Information.Name}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblDescription}" />
+                    <Label Grid.Column="1" Text="{Binding Data.Information.Description}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblLocalisation}" />
+                    <bcc:BxButton Grid.Column="1" BissCommand="{Binding CmdShowDeviceOnMap}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblCoordinates}" />
+                    <Label Grid.Column="1" Text="{Binding Data.Location}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblAdvancedMode}" />
+                    <Switch Grid.Column="1" IsToggled="{Binding AdvancedMode}" />
+                </Grid>
+                <StackLayout IsVisible="{Binding AdvancedMode}">
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblGateway}" />
+                        <Label Grid.Column="1" Text="{Binding Data.GatewayId}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblUpstream}" />
+                        <Label Grid.Column="1" Text="{Binding Data.Upstream, Converter={StaticResource ConverterEnumDisplayName}}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblPlatform}" />
+                        <Label Grid.Column="1" Text="{Binding Data.Plattform, Converter={StaticResource ConverterEnumDisplayName}}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblTransmission}" />
+                        <Label Grid.Column="1" Text="{Binding Data.TransmissionType, Converter={StaticResource ConverterEnumDisplayName}}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblTransmissionInterval}" />
+                        <Label Grid.Column="1" Text="{Binding Data.TransmissionInterval, Converter={StaticResource ConverterEnumDisplayName}}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblMeasurementInterval}" />
+                        <Label Grid.Column="1" Text="{Binding Data.MeasurmentInterval, Converter={StaticResource ConverterEnumDisplayName}}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="{bcm:Translate ResViewIotDeviceDetails.LblAdditionalSettings}" />
+                        <Label Grid.Column="1" Text="{Binding Data.AdditionalConfiguration, Converter={StaticResource ConverterEnumDisplayName}}" />
+                    </Grid>
+                </StackLayout>
+                <StackLayout IsVisible="{Binding IsOwnIotDevice}">
+                    <Grid ColumnDefinitions="*,3*">
+                        <bcc:BxButton
+                            Grid.Column="1"
+                            BissCommand="{Binding Dc.DcExIotDevices.CmdEditItem}"
+                            CommandParameter="{Binding DcListDataPoint}" />
+                    </Grid>
+                    <bcc:BxButton BissCommand="{Binding Dc.DcExMeasurementDefinition.CmdAddItem}" />
+                </StackLayout>
+                <StackLayout IsVisible="{Binding Dc.DcExMeasurementDefinition, Converter={StaticResource ConverterListAny}}">
+                    <Label FontSize="{StaticResource FontSizeLarge}" Text="{bcm:Translate ResViewIotDeviceDetails.LblMeasurements}" />
+                    <controls:MeasurementsComponent CanSubscribe="{Binding IsOwnIotDevice, Converter={StaticResource ConverterBoolInverted}}" MeasurementDefinitions="{Binding MeasurementDefinitions}" />
+                </StackLayout>
+
+            </StackLayout>
+        </ScrollView>
+
+
+        <!--#endregion-->
+
+    </bcc:PageControl>
+</view:BissContentPage>

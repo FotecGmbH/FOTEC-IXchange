@@ -1,0 +1,26 @@
+﻿@page "/viewabooverview"
+@page "/viewabooverview/{Id:int}"
+
+@using BlazorApp.Components
+@using BaseApp.Connectivity
+@inherits ProjectRazorPage<VmAboOverview>
+
+@if (ViewModel != null)
+{
+    <RadzenStack Gap="20px">
+        <PageHeader Text="@ViewModel.PageTitle"/>
+
+        <BxCollectionView Data="ViewModel.Dc.DcExAbos">
+            <Columns>
+                <RadzenDataGridColumn Title="@ResViewAboOverview.LblPageTitle" TItem="DcListTypeAbo" Property="@($"{nameof(DcListTypeAbo.Data)}.{nameof(DcListTypeAbo.Data.MeasurementDefinitionAssignment)}.{nameof(DcListTypeAbo.Data.MeasurementDefinitionAssignment.MeasurementDefinition)}.{nameof(DcListTypeAbo.Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information)}.{nameof(DcListTypeAbo.Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information.Name)}")"/>
+
+                <RadzenDataGridColumn TItem="DcListTypeAbo" Width="150px" Filterable="false" Sortable="false">
+                    <Template>
+                        <BxButton BissCommand="ViewModel.Dc.DcExAbos.CmdEditItem" ExecutionParameter="context" ButtonStyle="ButtonStyle.Primary" BxButtonType="EnumBxButtonType.JustGlyph"/>
+                        <BxButton BissCommand="ViewModel.Dc.DcExAbos.CmdRemoveItem" ExecutionParameter="context" BxButtonType="EnumBxButtonType.JustGlyph" ButtonStyle="ButtonStyle.Danger"/>
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </BxCollectionView>
+    </RadzenStack>
+}

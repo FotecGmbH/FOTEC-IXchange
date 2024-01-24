@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary
+    x:Class="BaseApp.View.Xamarin.Styles.StyConverterApp"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:baseconverter="http://biss.schemas.com/coreconverter"
+    xmlns:converter="clr-namespace:BaseApp.View.Xamarin.Converter;assembly=BaseApp.View.Xamarin">
+
+    <converter:ConverterImage x:Key="ConverterImage" />
+    <converter:ConverterViewstateEditIotDevice x:Key="ConverterViewstateEditIotDevice" />
+    <converter:ConverterIsNotDefaultTopic x:Key="ConverterIsNotDefaultTopic" />
+    <converter:ConverterLogLevel x:Key="ConverterLogLevel" />
+    <converter:ConverterCompanyType x:Key="ConverterCompanyType" />
+    <converter:ConverterValueTypeIsImage x:Key="ConverterValueTypeIsImage" />
+    <converter:ConverterCompanyVisible x:Key="ConverterCompanyVisible" />
+    <converter:ConverterConnectionDisconnected x:Key="ConverterConnectionDisconnected" />
+    <converter:ConverterColorEnumDeviceOnlineState x:Key="ConverterColorEnumDeviceOnlineState" />
+    <converter:ConverterIncomeOutputColor x:Key="ConverterIncomeOutputColor" />
+    <converter:ConverterEnumDisplayName x:Key="ConverterEnumDisplayName" />
+    <baseconverter:ConverterObjectNull
+        x:Key="ConverterObjectNull"
+        NotNullValue="True"
+        NullValue="False" />
+    <baseconverter:ConverterListAny
+        x:Key="ConverterListAny"
+        EmtpyValue="False"
+        NoListValue="False"
+        NotEmptyValue="True" />
+    <baseconverter:ConverterListAny
+        x:Key="ConvertListNotAny"
+        EmtpyValue="True"
+        NoListValue="True"
+        NotEmptyValue="False" />
+    <baseconverter:ConverterBoolInverted x:Key="ConverterBoolInverted" />
+
+</ResourceDictionary>

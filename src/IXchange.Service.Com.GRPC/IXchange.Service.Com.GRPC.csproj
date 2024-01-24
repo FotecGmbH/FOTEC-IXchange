@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Protos\common.proto" />
+    <None Remove="Protos\companies.proto" />
+    <None Remove="Protos\enums.proto" />
+    <None Remove="Protos\geo.proto" />
+    <None Remove="Protos\measurementdefinitions.proto" />
+    <None Remove="Protos\measurementresults.proto" />
+    <None Remove="Protos\projects.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\common.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\geo.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\measurementdefinitions.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\projects.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\measurementresults.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\companies.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\enums.proto" GrpcServices="Server" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.44.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IXchange.Service.Com.Base\IXchange.Service.Com.Base.csproj" />
+  </ItemGroup>
+
+</Project>

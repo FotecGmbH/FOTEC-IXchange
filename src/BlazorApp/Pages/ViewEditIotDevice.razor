@@ -1,0 +1,372 @@
+﻿@page "/ViewEditIotDevice"
+@page "/ViewEditIotDevice/{Id:int}"
+@using Exchange.Extensions
+@using BlazorApp.Components
+@using BDA.Common.Exchange.Enum
+@inherits ProjectRazorPage<VmEditIotDevice>
+
+@if (ViewModel != null!)
+{
+    <RadzenRow>
+        <RadzenColumn>
+            <RadzenStack>
+                <RadzenCard>
+                    <RadzenStack Gap="15px">
+
+                        @if (ViewModel.EntryName != null!)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel Text="@ViewModel.EntryName.Title"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxEntry ShowFrame="false" Entry="@ViewModel.EntryName"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+
+                        @if (ViewModel.EntryDescription != null!)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel Text="@ViewModel.EntryDescription.Title"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxEntry ShowFrame="false" Entry="@ViewModel.EntryDescription"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+
+                        @if (ViewModel.PickerUpstreamType != null)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="@($"{ResViewEditIotDevice.LblUpstream}:")"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+                                        <RadzenStack Orientation="Orientation.Horizontal" Gap="10px" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+                                            <BxPicker PickerInstance="@ViewModel.PickerUpstreamType" @bind-SelectedItem="ViewModel.PickerUpstreamType.SelectedItem"/>
+                                            <InfoIcon OnClick="ShowUpstreamInfoModal"/>
+                                            @if (ViewModel.ShowCmdEditDynConfig)
+                                            {
+                                                <BxButton BxButtonType="EnumBxButtonType.JustGlyph" BissCommand="ViewModel.CmdEditDynConfig"></BxButton>
+                                            }
+                                        </RadzenStack>
+                                    </RadzenStack>
+                                </RadzenColumn>
+                            </RadzenRow>
+
+                            @if (ViewModel.ShowOpenSenseBoxIdEntry)
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn Size="6" SizeMD="3">
+                                        <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryOpensenseBoxId.Title"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="6" SizeMD="9">
+                                        <RadzenStack Orientation="Orientation.Horizontal" Gap="10px" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+                                            <BxEntry ShowFrame="false" Entry="@ViewModel.EntryOpensenseBoxId"/>
+                                            <InfoIcon OnClick="ShowBoxIdInfoModal"/>
+                                        </RadzenStack>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            }
+
+                            @if (ViewModel.ShowSecretEntry)
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn Size="6" SizeMD="3">
+                                        <RadzenLabel class="labelstyeditdescription" Text="@($"{ResViewEditIotDevice.LblSecretCheckBox}:")"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="6" SizeMD="9">
+                                        <RadzenStack Orientation="Orientation.Horizontal" Gap="10px">
+                                            <RadzenCheckBox @bind-Value="@ViewModel.EnterSecret"/>
+                                            <InfoIcon OnClick="ShowSecretInfoModal"/>
+                                        </RadzenStack>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenRow>
+                                    <RadzenColumn Size="6" SizeMD="3">
+                                        <RadzenLabel class="labelstyeditdescription" Text="@($"{ResViewEditIotDevice.LblSecret}:")"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="6" SizeMD="9">
+                                        <BxEntry ShowFrame="false" Entry="@ViewModel.EntrySecret" Disabled="(!ViewModel.EnterSecret)"/>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            }
+                        }
+
+                        <RadzenRow>
+                            <RadzenColumn Size="6" SizeMD="3">
+                                <RadzenLabel class="labelstyeditdescription" Text="@ResViewIotDeviceDetails.LblLocalisation"/>
+                            </RadzenColumn>
+                            <RadzenColumn Size="6" SizeMD="9">
+                                <BxButton BissCommand="ViewModel.CmdGetPositionFromMap" BxButtonType="EnumBxButtonType.JustText"/>
+                            </RadzenColumn>
+                        </RadzenRow>
+
+                        @if (ViewModel.EntryPosLat != null!)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryPosLat.Title"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxEntry ShowFrame="false" Entry="@ViewModel.EntryPosLat"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+
+                        @if (ViewModel.EntryPosLon != null!)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryPosLon.Title"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxEntry ShowFrame="false" Entry="@ViewModel.EntryPosLon"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+
+                        @* @if (ViewModel.EntryPosAlt != null!)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryPosAlt.Title" />
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxEntry ShowFrame="false" Entry="@ViewModel.EntryPosAlt" />
+                                </RadzenColumn>
+                            </RadzenRow>
+                        } *@
+
+                        <RadzenRow>
+                            <RadzenColumn Size="6" SizeMD="3">
+                                <RadzenLabel class="labelstyeditdescription" Text="Plattform:"/>
+                            </RadzenColumn>
+                            <RadzenColumn Size="6" SizeMD="9">
+                                <RadzenStack Orientation="Orientation.Horizontal" Gap="10px" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+                                    <BxPicker PickerInstance="@ViewModel.PickerPlattformType" @bind-SelectedItem="@ViewModel.PickerPlattformType.SelectedItem"/>
+                                    <InfoIcon OnClick="ShowPlatformInfoModal"/>
+                                </RadzenStack>
+                            </RadzenColumn>
+                        </RadzenRow>
+
+                        @if (ViewModel.ShowConverterTypePicker)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="@($"{ResViewEditIotDevice.LblConverterType}:")"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <RadzenStack Orientation="Orientation.Horizontal" Gap="10px" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+                                        <BxPicker PickerInstance="@ViewModel.PickerConverter" @bind-SelectedItem="@ViewModel.PickerConverter.SelectedItem"/>
+                                        <InfoIcon OnClick="ShowConverterTypeInfoModal"/>
+                                    </RadzenStack>
+                                </RadzenColumn>
+                            </RadzenRow>
+
+                            @if (ViewModel.ShowCodeAreaEntry)
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn Size="6" SizeMD="3">
+                                        @* <RadzenLabel class="labelstyeditdescription" Text="@($"{ResViewEditIotDevice.LblCodeArea}:")"/> *@
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="6" SizeMD="9">
+                                        <RadzenStack>
+                                            <RadzenLabel Text="@ViewModel.CodeHeader"/>
+                                            <BxEntry ShowFrame="false" Entry="@ViewModel.EntryUserCode" IsMultiline="true"/>
+                                            <RadzenLabel Text="@ViewModel.CodeFooter"/>
+                                        </RadzenStack>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            }
+                        }
+
+                        <RadzenRow>
+                            <RadzenColumn Size="6" SizeMD="3">
+                                <RadzenLabel class="labelstyeditdescription" Text="Advanced Mode"/>
+                            </RadzenColumn>
+                            <RadzenColumn Size="6" SizeMD="9">
+                                <RadzenSwitch @bind-Value="ViewModel.AdvancedMode"/>
+                            </RadzenColumn>
+                        </RadzenRow>
+
+                        @if (ViewModel.AdvancedMode)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="Gateway:"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxPicker PickerInstance="@ViewModel.PickerGateways" @bind-SelectedItem="@ViewModel.PickerGateways.SelectedItem"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+
+
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="Übertragungsart:"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxPicker PickerInstance="@ViewModel.PickerTransmissionType" @bind-SelectedItem="@ViewModel.PickerTransmissionType.SelectedItem"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+
+                            @if (ViewModel.ShowTransmissionIntervalEntry && ViewModel.EntryTransmissionInterval != null!)
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn Size="6" SizeMD="3">
+                                        <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryTransmissionInterval.Title"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="6" SizeMD="9">
+                                        <BxEntry ShowFrame="false" Entry="@ViewModel.EntryTransmissionInterval"/>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            }
+
+                            @if (ViewModel.EntryMeasurmentInterval != null!)
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn Size="6" SizeMD="3">
+                                        <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryMeasurmentInterval.Title"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="6" SizeMD="9">
+                                        <BxEntry ShowFrame="false" Entry="@ViewModel.EntryMeasurmentInterval"/>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            }
+
+
+                            @if (ViewModel.PickerPositionType != null)
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn Size="6" SizeMD="3">
+                                        <RadzenLabel class="labelstyeditdescription" Text="@($"{ResViewEditIotDevice.LblPositionSource}:")"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="6" SizeMD="9">
+                                        <BxPicker PickerInstance="@ViewModel.PickerPositionType" @bind-SelectedItem="@ViewModel.PickerPositionType.SelectedItem"/>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            }
+
+                            @if (ViewModel.EntryAdditionalProperties != null!)
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn Size="6" SizeMD="3">
+                                        <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryAdditionalProperties.Title"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="6" SizeMD="9">
+                                        <BxEntry ShowFrame="false" Entry="@ViewModel.EntryAdditionalProperties"/>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            }
+
+
+                            @* @if (CheckCurrentViewState(ViewModel.CurrentViewState, ViewElement.OpensenseHistoricalData))
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn Size="6" SizeMD="3">
+                                        <RadzenLabel class="labelstyeditdescription" Text="Historische Daten herunterladen?"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="6" SizeMD="9">
+                                        <RadzenSwitch @bind-Value="@ViewModel.OpensenseDownloadData"/>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            } *@
+
+                            @* @if (ViewModel.OpensenseDownloadData)
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn Size="6" SizeMD="3">
+                                        <RadzenLabel class="labelstyeditdescription" Text="Welche Daten?"/>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="6" SizeMD="9">
+                                        <BxPicker PickerInstance="@ViewModel.PickerOpensenseDataTimeframe" @bind-SelectedItem="@ViewModel.PickerOpensenseDataTimeframe.SelectedItem"/>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            } *@
+
+                            @* @if (ViewModel.ShowAdditionalConfigEntry)
+                            {
+                                @if (ViewModel.EntryAdditionalConfiguration != null!)
+                                {
+                                    <RadzenRow>
+                                        <RadzenColumn Size="6" SizeMD="3">
+                                            <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryAdditionalConfiguration.Title"/>
+                                        </RadzenColumn>
+                                        <RadzenColumn Size="6" SizeMD="9">
+                                            <BxEntry ShowFrame="false" Entry="@ViewModel.EntryAdditionalConfiguration"/>
+                                        </RadzenColumn>
+                                    </RadzenRow>
+                                }
+                            } *@
+                        }
+                    </RadzenStack>
+                </RadzenCard>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+}
+
+
+@code {
+
+    private RenderFragment<DialogService> BoxIdInfoModal => ds =>
+        @<RadzenStack Gap="10px">
+            <RadzenStack Gap="0px">
+                <RadzenText Text="@ViewModel?.EntryOpensenseBoxId?.Title" TextStyle="TextStyle.Subtitle2"/>
+                <RadzenText Text="@ResViewEditIotDevice.Txt_BoxIdInfoModal"/>
+    </RadzenStack>
+
+    </RadzenStack>;
+
+    private RenderFragment<DialogService> PlatformInfoModal => ds =>
+        @<RadzenStack Gap="10px">
+            <RadzenStack Gap="0px">
+                <RadzenText Text="@EnumIotDevicePlattforms.DotNet.GetDisplayName()" TextStyle="TextStyle.Subtitle2"/>
+                <RadzenText Text="@(string.Format(ResViewEditIotDevice.Txt_PlattformModal1, ResEnumTranslations.EnumIotDeviceUpstreamTypes_Tcp))"/>
+            </RadzenStack>
+            <RadzenStack Gap="0px">
+                <RadzenText Text="@EnumIotDevicePlattforms.RaspberryPi.GetDisplayName()" TextStyle="TextStyle.Subtitle2"/>
+                <RadzenText Text="@(string.Format(ResViewEditIotDevice.Txt_PlattformModal2, ResEnumTranslations.EnumIotDeviceUpstreamTypes_Tcp))"/>
+            </RadzenStack>
+            <RadzenStack Gap="0px">
+                <RadzenText Text="@EnumIotDevicePlattforms.OpenSense.GetDisplayName()" TextStyle="TextStyle.Subtitle2"/>
+                <RadzenText Text="@(string.Format(ResViewEditIotDevice.Txt_PlattformModal3, ViewModel.EntryOpensenseBoxId.Title))"/>
+            </RadzenStack>
+            <RadzenStack Gap="0px">
+                <RadzenText Text="@EnumIotDevicePlattforms.Prebuilt.GetDisplayName()" TextStyle="TextStyle.Subtitle2"/>
+                <RadzenText Text="@(string.Format(ResViewEditIotDevice.Txt_PlattformModal5))"/>
+    </RadzenStack>
+    </RadzenStack>;
+
+    private RenderFragment<DialogService> UpstreamInfoModal => ds =>
+        @<RadzenStack Gap="10px">
+            <RadzenStack Gap="0px">
+                <RadzenText Text="@ResViewEditIotDevice.LblUpstream" TextStyle="TextStyle.Subtitle2"/>
+                <RadzenText Text="@ResViewEditIotDevice.Txt_UpstreamModal"/>
+    </RadzenStack>
+    </RadzenStack>;
+
+    private RenderFragment<DialogService> ConverterTypeInfoModal => ds =>
+        @<RadzenStack Gap="0px">
+            <RadzenText Text="@ResViewEditIotDevice.LblConverterType" TextStyle="TextStyle.Subtitle2"/>
+            <RadzenText Text="@ResViewEditIotDevice.Txt_ConverterTypeModal"/>
+            <RadzenImage Path="@ViewModel.SampleCodeUrl" Style="margin: 20px 0"/>
+            <RadzenText Text="@($"{ResViewEditIotDevice.Txt_ConverterTypeModal_Properties}:")" Style=""/>
+            <RadzenText Text="@ResViewEditIotDevice.Txt_ConverterTypeModal_MeasurementNumber"/>
+            <RadzenText Text="@ResViewEditIotDevice.Txt_ConverterTypeModal_MeasurementRaw"/>
+            <RadzenText Text="@ResViewEditIotDevice.Txt_ConverterTypeModal_MeasurementText"/>
+            <RadzenText Text="@ResViewEditIotDevice.Txt_ConverterTypeModal_MeasurementImage"/>
+            <RadzenText Text="@ResViewEditIotDevice.Txt_ConverterTypeModal_MeasurementBool"/>
+    </RadzenStack>;
+
+    private RenderFragment<DialogService> SecretInfoModal => ds =>
+        @<RadzenStack Gap="10px">
+            <RadzenText Text="@ResViewEditIotDevice.Txt_SecretModal"/>
+    </RadzenStack>;
+
+
+}

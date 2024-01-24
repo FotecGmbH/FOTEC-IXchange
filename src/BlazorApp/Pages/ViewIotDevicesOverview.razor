@@ -1,0 +1,65 @@
+﻿@page "/viewiotdevicesoverview"
+@page "/viewiotdevicesoverview/{Id:int}"
+
+@using BlazorApp.Components
+@using BaseApp.Connectivity
+@inherits ProjectRazorPage<VmIotDevicesOverview>
+
+@if (ViewModel != null)
+{
+    <RadzenStack Gap="20px">
+        <PageHeader Text="@ViewModel.PageTitle"/>
+
+        <RadzenRow>
+            <BxButton BissCommand="ViewModel.CollectionOwnDevices.CmdAddItem"
+                      ButtonStyle="ButtonStyle.Success"
+                      BxButtonType="EnumBxButtonType.JustGlyph"/>
+        </RadzenRow>
+        <RadzenRow>
+            <RadzenColumn Size="12" SizeMD="6">
+                <RadzenText Text="@ResViewIotDevicesOverview.LblOwnDevices" TextStyle="TextStyle.H5"/>
+                <BxCollectionView Collection="@ViewModel.CollectionOwnDevices"
+                                  AllowSorting="true"
+                                  AllowFiltering="true">
+                    <Columns>
+                        <RadzenDataGridColumn Title="@ResViewIotDevicesOverview.LblName" TItem="DcListTypeIotDevice" Property="@($"{nameof(DcListTypeIotDevice.Data)}.{nameof(DcListTypeIotDevice.Data.Information)}.{nameof(DcListTypeIotDevice.Data.Information.Name)}")"/>
+                        <RadzenDataGridColumn Title="@ResViewIotDevicesOverview.LblDescription" TItem="DcListTypeIotDevice" Property="@($"{nameof(DcListTypeIotDevice.Data)}.{nameof(DcListTypeIotDevice.Data.Information)}.{nameof(DcListTypeIotDevice.Data.Information.Description)}")"/>
+
+                        <RadzenDataGridColumn TItem="DcListTypeIotDevice" Width="120px" Sortable="false" Filterable="false">
+                            <Template>
+                                <BxButton BissCommand="ViewModel.CollectionOwnDevices.CmdItemInfo"
+                                          ExecutionParameter="context"
+                                          ButtonStyle="ButtonStyle.Primary"
+                                          BxButtonType="EnumBxButtonType.JustGlyph"/>
+                                <BxButton BissCommand="ViewModel.CollectionOwnDevices.CmdRemoveItem"
+                                          ExecutionParameter="context"
+                                          ButtonStyle="ButtonStyle.Danger"
+                                          BxButtonType="EnumBxButtonType.JustGlyph"/>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </BxCollectionView>
+            </RadzenColumn>
+            <RadzenColumn Size="12" SizeMD="6">
+                <RadzenText Text="@ResViewIotDevicesOverview.LblAboDevices" TextStyle="TextStyle.H5"/>
+                <BxCollectionView Collection="@ViewModel.CollectionSubscribedDevices"
+                                  AllowSorting="true"
+                                  AllowFiltering="true">
+                    <Columns>
+                        <RadzenDataGridColumn Title="@ResViewIotDevicesOverview.LblName" TItem="DcListTypeIotDevice" Property="@($"{nameof(DcListTypeIotDevice.Data)}.{nameof(DcListTypeIotDevice.Data.Information)}.{nameof(DcListTypeIotDevice.Data.Information.Name)}")"/>
+                        <RadzenDataGridColumn Title="@ResViewIotDevicesOverview.LblDescription" TItem="DcListTypeIotDevice" Property="@($"{nameof(DcListTypeIotDevice.Data)}.{nameof(DcListTypeIotDevice.Data.Information)}.{nameof(DcListTypeIotDevice.Data.Information.Description)}")"/>
+
+                        <RadzenDataGridColumn TItem="DcListTypeIotDevice" Width="80px" Sortable="false" Filterable="false">
+                            <Template>
+                                <BxButton BissCommand="ViewModel.CollectionSubscribedDevices.CmdItemInfo"
+                                          ExecutionParameter="context"
+                                          ButtonStyle="ButtonStyle.Primary"
+                                          BxButtonType="EnumBxButtonType.JustGlyph"/>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </BxCollectionView>
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenStack>
+}

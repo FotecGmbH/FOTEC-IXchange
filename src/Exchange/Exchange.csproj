@@ -1,0 +1,291 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<LangVersion>9.0</LangVersion>
+		<!-- Package Infos -->
+		<Product>IXchange</Product>
+		<Description>IoT Datentausch leicht gemacht</Description>
+		<Company>FOTEC Forschungs- und Technologietransfer GmbH</Company>
+		<Copyright>(C) 2009-2022 FOTEC Forschungs- und Technologietransfer GmbH</Copyright>
+		<Authors>FOTEC BISS Developers</Authors>
+		<PackageProjectUrl>https://www.fotec.at</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>BISS</PackageTags>
+		<Version>1.1.0</Version>
+		<PackageIcon>nugetImage.png</PackageIcon>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageReleaseNotes>In Readme.md</PackageReleaseNotes>
+		<!-- Projekt Einstellungen -->
+		<Nullable>Enable</Nullable>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+		<RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+		<RunAnalyzers>true</RunAnalyzers>
+		<!-- Build Einstellungen -->
+		<RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+		<SignAssembly>false</SignAssembly>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<DebugType>embedded</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageCopyToOutput>true</PackageCopyToOutput>
+		<NoWarn>NU1701;NU1702;NU5104</NoWarn>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<RepositoryUrl>-</RepositoryUrl>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove="Resources\Images\DefaultUserImage.png" />
+		<None Remove="Resources\Images\Fotec.png" />
+		<None Remove="Resources\Images\Logo.png" />
+		<None Remove="Resources\Images\Pin.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\Images\Pin.png">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\Images\DefaultUserImage.png" />
+		<EmbeddedResource Include="Resources\Images\Fotec.png" />
+		<EmbeddedResource Include="Resources\Images\Logo.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="BDA.Common.Exchange" Version="1.2.12" />
+		<PackageReference Include="Biss" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Connectivity" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Map" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Push" Version="8.3.2" />
+		<PackageReference Include="Biss.DevOps.Settings" Version="4.0.1" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Resources\ResViewEditMeasurementDefinition.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewEditMeasurementDefinition.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewInfo.Designer.cs">
+			<DependentUpon>ResViewInfo.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+		<Compile Update="Resources\ResCommon.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResCommon.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResEnumTranslations.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResEnumTranslations.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewAboOverview.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewAboOverview.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewAbos.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewAbos.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewAddUser.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewAddUser.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewConfigs.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewConfigs.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewEditAbo.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewEditAbo.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewEditGlobalConfig.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewEditGlobalConfig.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewEditIotDevice.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewEditIotDevice.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewEditUser.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewEditUser.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewEditUserPassword.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewEditUserPassword.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewIncomeOutput.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewIncomeOutput.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewIotDeviceDetails.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewIotDeviceDetails.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewIotDevicesOverview.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewIotDevicesOverview.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewLogin.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewLogin.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewMain.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewMain.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewMyRatings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewMyRatings.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewNotifications.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewNotifications.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewSettings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewSettings.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewSettingsPush.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewSettingsPush.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ResViewUser.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ResViewUser.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Resources\ResViewEditMeasurementDefinition.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewEditMeasurementDefinition.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewInfo.resx">
+			<LastGenOutput>ResViewInfo.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResCommon.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResCommon.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResEnumTranslations.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResEnumTranslations.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewAboOverview.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewAboOverview.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewAbos.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewAbos.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewAddUser.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewAddUser.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewConfigs.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewConfigs.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewEditAbo.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewEditAbo.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewEditGlobalConfig.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewEditGlobalConfig.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewEditIotDevice.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewEditIotDevice.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewEditUser.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewEditUser.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewEditUserPassword.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewEditUserPassword.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewIncomeOutput.en.resx">
+			<Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewIncomeOutput.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewIncomeOutput.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewIotDeviceDetails.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewIotDeviceDetails.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewIotDevicesOverview.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewIotDevicesOverview.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewLogin.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewLogin.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewMain.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewMain.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewMyRatings.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewMyRatings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewNotifications.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewNotifications.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewSettings.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewSettings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewSettingsPush.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewSettingsPush.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ResViewUser.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>ResViewUser.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Extensions\" />
+	</ItemGroup>
+	<PropertyGroup>
+		<SsdtUnitTestVersion>3.1</SsdtUnitTestVersion>
+	</PropertyGroup>
+</Project>

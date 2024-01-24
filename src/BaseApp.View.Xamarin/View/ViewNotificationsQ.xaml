@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewNotificationsQ"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:connectivity="clr-namespace:BaseApp.Connectivity;assembly=BaseApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:markupExtensions="http://biss.schemas.com/markupextensions"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resources="clr-namespace:Exchange.Resources;assembly=Exchange"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    xmlns:viewmodels="clr-namespace:BaseApp.ViewModel;assembly=BaseApp"
+    x:Name="ViewNotificationsRef"
+    d:DataContext="{x:Static viewmodels:VmNotifications.DesignInstance}"
+    x:TypeArguments="viewmodels:VmNotifications"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl>
+        <Grid
+            Margin="8"
+            RowDefinitions="Auto,*"
+            RowSpacing="10">
+            <Label FontSize="{StaticResource FontSizeLarge}" Text="{Binding PageTitle}" />
+            <Grid
+                Grid.Row="1"
+                RowDefinitions="Auto,*"
+                RowSpacing="5">
+                <Grid Padding="12" ColumnDefinitions="*,3*,2*,*,2*">
+                    <Label Text="{x:Static resources:ResViewNotifications.GridColumnHeaderType}" />
+                    <!--<Label Grid.Column="1" Text="{x:Static resources:ResViewNotifications.GridColumnHeaderDescription}" />
+                    <Label Grid.Column="2" Text="{x:Static resources:ResViewNotifications.GridColumnHeaderSensor}" />
+                    <Label Grid.Column="3" Text="{x:Static resources:ResViewNotifications.GridColumnHeaderMeasurementValue}" />-->
+                    <Label Text="{markupExtensions:Translate ResViewNotifications.GridColumnHeaderType}" />
+                    <Label Grid.Column="1" Text="{markupExtensions:Translate ResViewNotifications.GridColumnHeaderDescription}" />
+                    <Label Grid.Column="2" Text="{markupExtensions:Translate ResViewNotifications.GridColumnHeaderSensor}" />
+                    <Label Grid.Column="3" Text="{markupExtensions:Translate ResViewNotifications.GridColumnHeaderMeasurementValue}" />
+                    <Label Grid.Column="4" Text="{markupExtensions:Translate ResViewNotifications.GridColumnHeaderTimeStamp}" />
+                </Grid>
+                <ListView Grid.Row="1" ItemsSource="{Binding Dc.DcExNotifications}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="connectivity:DcListTypeNotification">
+                            <ViewCell>
+                                <Grid ColumnDefinitions="*,3*,2*,*,2*">
+                                    <Label Text="{Binding Data.NotificationType, Converter={StaticResource ConverterEnumDisplayName}}" />
+                                    <Label Grid.Column="1" Text="{Binding Data.Description}" />
+                                    <Label Grid.Column="2" Text="{Binding Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information.Name}" />
+                                    <Label Grid.Column="3" Text="{Binding Data.MeasurementDefinitionAssignment.Type, Converter={StaticResource ConverterEnumDisplayName}}" />
+                                    <Label Grid.Column="4" Text="{Binding Data.TimeStamp, StringFormat='{0:dd.MM.yyyy HH:mm:ss}'}" />
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ViewModel.CmdOpenDetailView, Source={x:Reference ViewNotificationsRef}}" CommandParameter="{Binding}" />
+                                    </Grid.GestureRecognizers>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+    </bcc:PageControl>
+</view:BissContentPage>

@@ -1,0 +1,30 @@
+﻿@using BDA.Common.Exchange.Model.ConfigApp
+@using Biss.Dc.Client
+<RadzenStack Gap="10px">
+    <RadzenText Text="@Information?.Name" TextStyle="TextStyle.H5"/>
+    <RadzenText Text="@Information?.Description"/>
+
+    <MeasurementsComponent CanSubscribe="@(!VmProjectBase.GetVmBaseStatic.Dc.DcExUser.Data.HasPermissionTo(Data))"
+                           MeasurementDefinitions="Data?.MeasurementDefinitions"/>
+</RadzenStack>
+
+@code {
+
+    /// <summary>
+    /// IotDeviceData
+    /// </summary>
+    [Parameter]
+    [EditorRequired]
+    public DcListDataPoint<ExIotDevice> DcListTypeIotDevice { get; set; }
+
+    /// <summary>
+    /// Iot device
+    /// </summary>
+    private ExIotDevice? Data => DcListTypeIotDevice?.Data;
+
+    /// <summary>
+    /// Information
+    /// </summary>
+    private ExInformation? Information => Data?.Information;
+
+}

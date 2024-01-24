@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="BaseApp.View.Xamarin.Controls.MeasurementDetailsComponent"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:configApp="clr-namespace:Exchange.Model.ConfigApp;assembly=Exchange"
+    xmlns:controls="clr-namespace:BaseApp.View.Xamarin.Controls;assembly=BaseApp.View.Xamarin"
+    xmlns:markupExtensions="http://biss.schemas.com/markupextensions"
+    xmlns:resources="clr-namespace:Exchange.Resources;assembly=Exchange"
+    x:Name="ViewMeasurementDetailsComponentRef">
+    <ContentView.Content>
+        <StackLayout BindingContext="{x:Reference ViewMeasurementDetailsComponentRef}" Spacing="10">
+            <Grid ColumnDefinitions="*,3*">
+                <CheckBox
+                    BackgroundColor="Transparent"
+                     CheckedChanged="CheckBox_OnCheckedChanged"
+                    IsChecked="{Binding MeasurementDefinition.IsSelected}"
+                    IsEnabled="{Binding IsSelectable}" />
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding MeasurementDefinition.Information.Name}"
+                    VerticalOptions="Center" />
+            </Grid>
+            <Label Text="{Binding MeasurementDefinitionAssignment.CostsAsString}" />
+            <Label Text="{Binding MeasurementDefinitionAssignment.TypeAsString}" />
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{Binding LastUpdate}" VerticalOptions="Center" />
+                <StackLayout
+                    Grid.Column="1"
+                    IsVisible="{Binding IsEditable}"
+                    Orientation="Horizontal"
+                    Spacing="5">
+                    <bcc:BxGlyphButton
+                        Command="{Binding EditCommand, Source={x:Reference ViewMeasurementDetailsComponentRef}}"
+                        CommandParameter="{Binding}"
+                        Glyph="{Binding EditCommand.Glyph, Source={x:Reference ViewMeasurementDetailsComponentRef}}"
+                        GlyphColor="Black" />
+                    <bcc:BxGlyphButton
+                        Command="{Binding DeleteCommand, Source={x:Reference ViewMeasurementDetailsComponentRef}}"
+                        CommandParameter="{Binding}"
+                        Glyph="{Binding DeleteCommand.Glyph, Source={x:Reference ViewMeasurementDetailsComponentRef}}"
+                        GlyphColor="Black" />
+                </StackLayout>
+            </Grid>
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{markupExtensions:Translate ResViewMyRatings.LblRatings}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CmdShowRatings}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <controls:IxChangeRating
+                    Grid.Column="1"
+                    ReadOnly="true"
+                    StarValue="{Binding MeasurementDefinitionAssignment.TotalRatingInt}" />
+            </Grid>
+            <Grid
+                IsVisible="{Binding ShowRatings}"
+                RowDefinitions="Auto"
+                RowSpacing="5">
+                <StackLayout BindableLayout.EmptyView="Keine Bewertungen vorhanden" BindableLayout.ItemsSource="{Binding MeasurementDefinitionAssignment.Ratings}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Grid x:DataType="configApp:ExRating">
+                                <StackLayout Spacing="10">
+                                    <StackLayout Spacing="3">
+                                        <controls:IxChangeRating ReadOnly="True" StarValue="{Binding Rating}" />
+                                        <Label Text="{Binding User.Fullname}" />
+                                    </StackLayout>
+                                    <Label Text="{Binding Description}" />
+                                </StackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </Grid>
+            <bcc:BxCollapseView
+                HeaderTitle="{x:Static resources:ResCommon.TxtMore}"
+                IsVisible="{Binding CanSeeMore}"
+                PropertyChanged="BindableObject_OnPropertyChanged">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="200" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <bcc:BxPicker
+                        Grid.Row="0"
+                        Margin="0,-4,0,0"
+                        ObservableCollectionSelectable="{Binding PickerTimePeriod}" />
+
+                    <bcc:BxListView
+                        Grid.Row="1"
+                        ItemsSource="{Binding Measurements}"
+                        SelectionMode="None">
+                        <bcc:BxListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Text="{Binding TimeStamp, StringFormat='{0:dd.MM.yyyy HH:mm:ss}'}" />
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Text="{Binding Value}" />
+                                        </Grid>
+
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+
+                        </bcc:BxListView.ItemTemplate>
+
+                    </bcc:BxListView>
+
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <bcc:BxButton
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="5"
+                            BissCommand="{Binding CmdNavigateLeft}" />
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="5"
+                            Style="{markupExtensions:Sty LabelStyDetail}"
+                            Text="{Binding CurrentPage}"
+                            VerticalOptions="Center" />
+
+                        <bcc:BxButton
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Margin="5"
+                            BissCommand="{Binding CmdNavigateRight}" />
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            Margin="5"
+                            Style="{markupExtensions:Sty LabelStyDetail}"
+                            Text="{Binding Pages}"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Grid>
+
+
+            </bcc:BxCollapseView>
+
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

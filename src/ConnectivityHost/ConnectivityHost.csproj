@@ -1,0 +1,129 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<!-- Package Infos -->
+		<Product>IXchange</Product>
+		<Description>IoT Datentausch leicht gemacht</Description>
+		<Company>FOTEC Forschungs- und Technologietransfer GmbH</Company>
+		<Copyright>(C) 2009-2022 FOTEC Forschungs- und Technologietransfer GmbH</Copyright>
+		<Authors>FOTEC BISS Developers</Authors>
+		<PackageProjectUrl>https://www.fotec.at</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>BISS</PackageTags>
+		<Version>1.1.0</Version>
+		<PackageIcon>nugetImage.png</PackageIcon>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageReleaseNotes>In Readme.md</PackageReleaseNotes>
+		<!-- Projekt Einstellungen -->
+		<Nullable>Enable</Nullable>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+		<RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+		<RunAnalyzers>true</RunAnalyzers>
+		<!-- Build Einstellungen -->
+		<RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+		<SignAssembly>false</SignAssembly>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<DebugType>embedded</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageCopyToOutput>true</PackageCopyToOutput>
+		<NoWarn>NU1701;NU1702;NU5104;AD0001</NoWarn>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<RepositoryUrl>-</RepositoryUrl>
+		<!-- Code Generator -->
+		<BissAppsSourceGeneratorEnableDebug>false</BissAppsSourceGeneratorEnableDebug>
+		<BissAppsViewGeneratorDisable>true</BissAppsViewGeneratorDisable>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Controllers\**" />
+		<Content Remove="Controllers\**" />
+		<EmbeddedResource Remove="Controllers\**" />
+		<None Remove="Controllers\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.16.0" />
+		<PackageReference Include="Biss" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Blazor" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Connectivity" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Generator" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Map" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Push" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Service.Connectivity" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Service.Push" Version="8.3.2" />
+		<PackageReference Include="Biss.Core.Logging.Events" Version="8.3.2" />
+		<PackageReference Include="Biss.Dc.Transport.Server.SignalR" Version="8.3.2" />
+		<PackageReference Include="ChartJs.Blazor.Fork" Version="2.0.2" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.45.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.7">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\IXchange.Service.AppConnectivity\IXchange.Service.AppConnectivity.csproj" />
+		<ProjectReference Include="..\IXchange.Service.Com.Base\IXchange.Service.Com.Base.csproj" />
+		<ProjectReference Include="..\IXchange.Service.Com.GRPC\IXchange.Service.Com.GRPC.csproj" />
+		<ProjectReference Include="..\IXchange.Service.Com.Rest\IXchange.Service.Com.Rest.csproj" />
+		<ProjectReference Include="..\IXchange.Service.TriggerAgent\IXchange.Service.TriggerAgent.csproj" />
+		<ProjectReference Include="..\Exchange\Exchange.csproj" />
+		<ProjectReference Include="..\IXchange.GatewayService\IXchange.GatewayService.csproj" />
+		<ProjectReference Include="..\WebExchange\WebExchange.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Remove="compilerconfig.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="compilerconfig.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<AdditionalFiles Include="BaseApp\Templates\RazorView.sbntxt" BissAppsTemplateDestinationPath="Pages\" BissAppsTemplateType="Razor" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Properties\" />
+		<Folder Include="wwwroot\bib\" />
+		<Folder Include="BaseApp\Templates\" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="wwwroot\css\streamline\demo-files\demo.js" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Update="Views\EMail\_EMailBase.cshtml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Update="Views\Shared\EMail.cshtml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Update="Views\Shared\Message.cshtml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\Content\SampleCode.png">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\favicon.ico">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+	<ItemGroup>
+		<UpToDateCheckInput Remove="Views\EMail\_EMailBase.cshtml" />
+	</ItemGroup>
+	<ItemGroup>
+		<_ContentIncludedByDefault Remove="Views\EMail\_EMailBase.cshtml" />
+		<_ContentIncludedByDefault Remove="Views\Shared\EMail.cshtml" />
+	</ItemGroup>
+	<ItemGroup>
+		<UpToDateCheckInput Remove="Views\Shared\EMail.cshtml" />
+	</ItemGroup>
+</Project>

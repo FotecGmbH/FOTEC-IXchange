@@ -1,0 +1,13 @@
+﻿<div @onclick="OnClick" style="@(OnClick.HasDelegate ? "cursor: pointer" : string.Empty)">
+    <BxIcon Glyph="@Glyphs.Information_circle"/>
+</div>
+
+@code {
+
+    /// <summary>
+    /// OnClick
+    /// </summary>
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+}

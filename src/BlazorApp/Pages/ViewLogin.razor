@@ -1,0 +1,37 @@
+@page "/ViewLogin"
+@page "/ViewLogin/{Id:int}"
+
+@inherits ProjectRazorPage<VmLogin>
+
+@if (ViewModel != null)
+{
+    <CardControl>
+
+        <div class="mb-3">
+            <EntryControl ShowFrame="false" Entry="@ViewModel.EntryLoginName"></EntryControl>
+        </div>
+
+        @if (ViewModel.IsPasswordEntryVisible)
+        {
+            <div class="mb-3">
+                <EntryControl ShowFrame="false" Entry="@ViewModel.EntryPassword" IsPassword="true"></EntryControl>
+            </div>
+            <SwitchControl Item="true" Disabled="true" Title="Angemeldet bleiben"></SwitchControl>
+        }
+
+        @if (ViewModel.IsForgotPasswordVisible)
+        {
+            <ButtonControl Item="ViewModel.CmdForgotPassword"></ButtonControl>
+        }
+        @if (ViewModel.IsResendAccessLinkVisible)
+        {
+            <ButtonControl Item="ViewModel.CmdResendAccessLink"></ButtonControl>
+        }
+
+
+        <div class="mt-2">
+            <ButtonControl Item="ViewModel.CmdLogin"></ButtonControl>
+        </div>
+
+    </CardControl>
+}

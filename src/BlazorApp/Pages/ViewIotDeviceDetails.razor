@@ -1,0 +1,134 @@
+﻿@page "/viewiotdevicedetails"
+@page "/viewiotdevicedetails/{Id:int}"
+
+@using Exchange.Extensions
+@using BlazorApp.Components
+@inherits ProjectRazorPage<VmIotDeviceDetails>
+
+@if (ViewModel != null)
+{
+    <RadzenStack Gap="20px">
+        <PageHeader Text="@ViewModel.PageTitle"/>
+
+        <RadzenStack Gap="10px">
+
+            @foreach (var entry in dictionary)
+            {
+                <RadzenRow>
+                    <RadzenColumn Size="6" SizeMD="3">
+                        <RadzenLabel Text="@entry.Key"/>
+                    </RadzenColumn>
+                    <RadzenColumn Size="6" SizeMD="9">
+                        @entry.Value
+                    </RadzenColumn>
+                </RadzenRow>
+            }
+
+            @if (ViewModel.AdvancedMode)
+            {
+                foreach (var entry in dictionaryAdvancedMode)
+                {
+                    <RadzenRow>
+                        <RadzenColumn Size="6" SizeMD="3">
+                            <RadzenLabel Text="@entry.Key"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="6" SizeMD="9">
+                            @entry.Value
+                        </RadzenColumn>
+                    </RadzenRow>
+                }
+            }
+
+            @if (ViewModel.IsOwnIotDevice)
+            {
+                <RadzenRow>
+                    <RadzenColumn Size="6" SizeMD="3">
+
+                    </RadzenColumn>
+                    <RadzenColumn Size="6" SizeMD="9">
+                        <BxButton BissCommand="ViewModel.Dc.DcExIotDevices.CmdEditItem" ExecutionParameter="ViewModel.DcListDataPoint" BxButtonType="EnumBxButtonType.JustGlyph" ButtonStyle="ButtonStyle.Primary"/>
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow>
+                    <BxButton BissCommand="ViewModel.Dc.DcExMeasurementDefinition.CmdAddItem"
+                              BxButtonType="EnumBxButtonType.JustGlyph"
+                              ButtonStyle="ButtonStyle.Success"/>
+                </RadzenRow>
+            }
+
+            @if (ViewModel.Dc.DcExMeasurementDefinition?.Any() ?? false)
+            {
+                <RadzenText TextStyle="TextStyle.H5" Style="margin-top: 20px"
+                            Text="@ResViewIotDeviceDetails.LblMeasurements"/>
+
+                <MeasurementsComponent MeasurementDefinitions="ViewModel.MeasurementDefinitions"
+                                       CanSubscribe="@(!ViewModel.IsOwnIotDevice)"/>
+            }
+
+        </RadzenStack>
+    </RadzenStack>
+}
+
+@code{
+
+    private RenderFragment NameRenderFragment => __builder =>
+    {
+        <RadzenLabel Text="@ViewModel!.Data.Information.Name"/>
+    };
+
+    private RenderFragment DescriptionRenderFragment => __builder =>
+    {
+        <RadzenLabel Text="@ViewModel!.Data.Information.Description"/>
+    };
+
+    private RenderFragment LocalisationRenderFragment => __builder =>
+    {
+        <BxButton BissCommand="ViewModel!.CmdShowDeviceOnMap" BxButtonType="EnumBxButtonType.JustText" ButtonStyle="ButtonStyle.Primary"/>
+    };
+
+    private RenderFragment CoordinatesRenderFragment => __builder =>
+    {
+        <RadzenLabel Text="@ViewModel!.Data.Location.ToString()"/>
+    };
+
+    private RenderFragment AdvancedModeRenderFragment => __builder =>
+    {
+        <RadzenSwitch @bind-Value="@ViewModel!.AdvancedMode"/>
+    };
+
+    private RenderFragment GatewayRenderFragment => __builder =>
+    {
+        <RadzenLabel Text="@ViewModel!.Data.GatewayId.ToString()"/>
+    };
+
+    private RenderFragment UpstreamRenderFragment => __builder =>
+    {
+        <RadzenLabel Text="@ViewModel!.Data.Upstream.GetDisplayName()"/>
+    };
+
+    private RenderFragment PlatformRenderFragment => __builder =>
+    {
+        <RadzenLabel Text="@ViewModel!.Data.Plattform.GetDisplayName()"/>
+    };
+
+    private RenderFragment TransmissionRenderFragment => __builder =>
+    {
+        <RadzenLabel Text="@ViewModel!.Data.TransmissionType.GetDisplayName()"/>
+    };
+
+    private RenderFragment TransmissionIntervalRenderFragment => __builder =>
+    {
+        <RadzenLabel Text="@ViewModel!.Data.TransmissionInterval.ToString()"/>
+    };
+
+    private RenderFragment MeasurementIntervalRenderFragment => __builder =>
+    {
+        <RadzenLabel Text="@ViewModel!.Data.MeasurmentInterval.ToString()"/>
+    };
+
+    private RenderFragment AdditionalSettingsRenderFragment => __builder =>
+    {
+        <RadzenLabel Text="@ViewModel!.Data.AdditionalConfiguration"/>
+    };
+
+}

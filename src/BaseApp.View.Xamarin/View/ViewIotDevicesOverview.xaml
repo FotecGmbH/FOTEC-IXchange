@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewIotDevicesOverview"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:connectivity="clr-namespace:BaseApp.Connectivity;assembly=BaseApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:markupExtensions="http://biss.schemas.com/markupextensions"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    xmlns:viewmodels="clr-namespace:BaseApp.ViewModel;assembly=BaseApp"
+    x:Name="ViewIotDevicesOverviewRef"
+    d:DataContext="{x:Static viewmodels:VmIotDevicesOverview.DesignInstance}"
+    x:TypeArguments="viewmodels:VmIotDevicesOverview"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl>
+
+        <!--#region View Content-->
+        <Grid
+            Margin="8"
+            RowDefinitions="Auto,Auto,*"
+            RowSpacing="5">
+            <Label HorizontalTextAlignment="Center" Text="{Binding PageTitle}" />
+            <bcc:BxButton Grid.Row="1" BissCommand="{Binding Dc.DcExIotDevices.CmdAddItem}" />
+            <Grid
+                Grid.Row="2"
+                ColumnSpacing="10"
+                RowDefinitions="*,*">
+                <!--#region Eigene Devices-->
+                <Grid RowDefinitions="Auto,*">
+                    <Label HorizontalTextAlignment="Center" Text="Eigene Geräte:" />
+                    <Grid
+                        Grid.Row="1"
+                        RowDefinitions="Auto,*"
+                        RowSpacing="5">
+                        <Grid Padding="12" ColumnDefinitions="2*,2*,*">
+                            <Label Text="{markupExtensions:Translate ResViewIotDevicesOverview.LblName}" />
+                            <Label Grid.Column="1" Text="{markupExtensions:Translate ResViewIotDevicesOverview.LblDescription}" />
+                        </Grid>
+                        <ListView Grid.Row="1" ItemsSource="{Binding CollectionOwnDevices}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="connectivity:DcListTypeIotDevice">
+                                    <ViewCell>
+                                        <Grid ColumnDefinitions="2*,2*,*">
+                                            <Label
+                                                Grid.Column="0"
+                                                Text="{Binding Data.Information.Name}"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding Data.Information.Description}"
+                                                VerticalOptions="Center" />
+                                            <StackLayout
+                                                Grid.Column="2"
+                                                Orientation="Horizontal"
+                                                Spacing="5">
+                                                <bcc:BxGlyphButton
+                                                    Command="{Binding ViewModel.CollectionOwnDevices.CmdItemInfo, Source={x:Reference ViewIotDevicesOverviewRef}}"
+                                                    CommandParameter="{Binding}"
+                                                    Glyph="{Binding ViewModel.CollectionOwnDevices.CmdItemInfo.Glyph, Source={x:Reference ViewIotDevicesOverviewRef}}"
+                                                    GlyphColor="Black" />
+                                                <bcc:BxGlyphButton
+                                                    Command="{Binding ViewModel.CollectionOwnDevices.CmdRemoveItem, Source={x:Reference ViewIotDevicesOverviewRef}}"
+                                                    CommandParameter="{Binding}"
+                                                    Glyph="{Binding ViewModel.CollectionOwnDevices.CmdRemoveItem.Glyph, Source={x:Reference ViewIotDevicesOverviewRef}}"
+                                                    GlyphColor="Black" />
+                                            </StackLayout>
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Grid>
+
+                <!--#endregion-->
+
+                <!--#region Abonnierte Geräte-->
+                <Grid Grid.Row="1" RowDefinitions="Auto,*">
+                    <Label HorizontalTextAlignment="Center" Text="Abonnierte Geräte:" />
+                    <Grid
+                        Grid.Row="1"
+                        RowDefinitions="Auto,*"
+                        RowSpacing="5">
+                        <Grid Padding="12" ColumnDefinitions="2*,2*,*">
+                            <Label Text="{markupExtensions:Translate ResViewIotDevicesOverview.LblName}" />
+                            <Label Grid.Column="1" Text="{markupExtensions:Translate ResViewIotDevicesOverview.LblDescription}" />
+                        </Grid>
+                        <ListView Grid.Row="1" ItemsSource="{Binding CollectionSubscribedDevices}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="connectivity:DcListTypeIotDevice">
+                                    <ViewCell>
+                                        <Grid ColumnDefinitions="2*,2*,*">
+                                            <Label Grid.Column="0" Text="{Binding Data.Information.Name}" />
+                                            <Label Grid.Column="1" Text="{Binding Data.Information.Description}" />
+                                            <bcc:BxGlyphButton
+                                                Grid.Column="2"
+                                                Command="{Binding ViewModel.CollectionSubscribedDevices.CmdItemInfo, Source={x:Reference ViewIotDevicesOverviewRef}}"
+                                                CommandParameter="{Binding}"
+                                                Glyph="{Binding ViewModel.CollectionSubscribedDevices.CmdItemInfo.Glyph, Source={x:Reference ViewIotDevicesOverviewRef}}"
+                                                GlyphColor="Black" />
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Grid>
+
+                <!--#endregion-->
+            </Grid>
+
+        </Grid>
+        <!--#endregion-->
+
+    </bcc:PageControl>
+</view:BissContentPage>

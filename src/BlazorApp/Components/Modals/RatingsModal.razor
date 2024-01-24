@@ -1,0 +1,124 @@
+﻿@using BaseApp.Connectivity
+@using BaseApp.Helper
+@using BDA.Common.Exchange.Model.ConfigApp
+@using Biss.Apps
+@using Biss.Dc.Core
+@using Exchange.Model.ConfigApp
+@using System.Collections.ObjectModel
+<RadzenStack>
+    <RadzenText Text="@MeasurementDefinition?.Information?.Name" TextStyle="TextStyle.H5"/>
+
+    @if (VmProjectBase.GetVmBaseStatic.Dc.DcExRatings?.Any() ?? false)
+    {
+        <RadzenDataList Data="VmProjectBase.GetVmBaseStatic.Dc.DcExRatings"
+                        AllowVirtualization="true">
+            <Template>
+                @{
+                    var ratingName = $"rating_{context.Id}";
+                    <RadzenStack>
+                        <RadzenStack Orientation="Orientation.Horizontal" Gap="3px">
+                            <IXChangeRating Value="@context.Data.Rating" ReadOnly="true" Name="@ratingName"/>
+                            <RadzenLabel Component="@ratingName" Text="@context.Data.User.Fullname"/>
+                        </RadzenStack>
+                        <RadzenText Text="@context.Data.Description"/>
+                    </RadzenStack>
+                }
+            </Template>
+        </RadzenDataList>
+    }
+
+    @if (OwnRatingDataPoint?.Data is not null)
+    {
+        <EditRatingComponent Rating="OwnRatingDataPoint"/>
+    }
+
+</RadzenStack>
+
+@code {
+
+    /// <summary>
+    /// DialogService
+    /// </summary>
+    [Inject]
+    public DialogService DialogService { get; set; }
+
+    private DcListTypeRating OwnRatingDataPoint { get; set; }
+
+    /// <summary>
+    /// MeasurementDefinition
+    /// </summary>
+    [Parameter]
+    [EditorRequired]
+    public ExMeasurementDefinition MeasurementDefinition { get; set; }
+
+    /// <summary>
+    /// Cmd um Rating zu speichern
+    /// </summary>
+    public VmCommand CmdSaveOwnRating { get; set; }
+
+    /// <summary>
+    /// Bewertungen
+    /// </summary>
+    private ObservableCollection<ExRating>? Ratings => ExMesDefAssignHelper.GetAssignment(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).Data?.Ratings;
+
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its
+    /// initial parameters from its parent in the render tree.
+    /// Override this method if you will perform an asynchronous operation and
+    /// want the component to refresh when that operation is completed.
+    /// </summary>
+    /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing any asynchronous operation.</returns>
+    protected override async Task OnInitializedAsync()
+    {
+        await VmProjectBase.GetVmBaseStatic.Dc.DcExRatings.WaitDataFromServerAsync(reload: true) /*.Sync()*/.ConfigureAwait(true);
+        //await VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinitionAssignments.WaitDataFromServerAsync(reload: true)/*.Sync()*/.ConfigureAwait(true);
+        VmProjectBase.GetVmBaseStatic.Dc.DcExRatings.FilterList(x => x.Data.MeasurementDefinitionAssignment.Id == ExMesDefAssignHelper.GetAssignment(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).Data.Id);
+
+        var ownRating = ExMesDefAssignHelper.GetAssignment(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).Data.Ratings.FirstOrDefault(x => x.User.Id == VmProjectBase.GetVmBaseStatic.Dc.DcExUser.Data.Id);
+
+        OwnRatingDataPoint = VmProjectBase.GetVmBaseStatic.Dc.DcExRatings.FirstOrDefault(x => x.Index == ownRating?.Id) ??
+                             new DcListTypeRating(new ExRating
+                                                  {
+                                                      User = VmProjectBase.GetVmBaseStatic.Dc.DcExUser.Data,
+                                                      MeasurementDefinitionAssignment = ExMesDefAssignHelper.GetAssignment(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).Data
+                                                  });
+
+        InitializeCommands();
+        await base.OnInitializedAsync();
+    }
+
+    /// <summary>
+    /// Initialisieren der Commands
+    /// </summary>
+    private void InitializeCommands()
+    {
+        CmdSaveOwnRating = new VmCommand("Bestätigen", async () =>
+        {
+            if (OwnRatingDataPoint.Data.Id < 1)
+            {
+                VmProjectBase.GetVmBaseStatic.Dc.DcExRatings.Add(OwnRatingDataPoint);
+            }
+            else
+            {
+                OwnRatingDataPoint.State = EnumDcListElementState.Modified;
+            }
+
+            var storeResult = await OwnRatingDataPoint.StoreData(true);
+
+            if (storeResult.DataOk)
+            {
+                DialogService.Close();
+            }
+            else
+            {
+                var answer = await VmBase.MsgBox.Show($"{storeResult.ServerExceptionText}<br>Trotzdem schließen?", "Error", VmMessageBoxButton.YesNo, VmMessageBoxImage.Error).ConfigureAwait(true);
+
+                if (answer is VmMessageBoxResult.Yes)
+                {
+                    DialogService.Close();
+                }
+            }
+        });
+    }
+
+}

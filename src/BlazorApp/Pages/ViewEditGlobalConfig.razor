@@ -1,0 +1,66 @@
+﻿@page "/ViewEditGlobalConfig"
+@page "/ViewEditGlobalConfig/{Id:int}"
+@using BlazorApp.Components
+@inherits ProjectRazorPage<VmEditGlobalConfig>
+
+@if (ViewModel != null!)
+{
+    <RadzenRow>
+        <RadzenColumn>
+            <RadzenCard>
+                <RadzenStack>
+
+                    <PageHeader Text="@ResViewEditGlobalConfig.PageTitle"/>
+
+                    @foreach (var entry in dictionary)
+                    {
+                        <RadzenRow>
+                            <RadzenColumn Size="6" SizeSM="3" SizeLG="1">
+                                <RadzenLabel class="labelstyeditdescription" Text="@entry.Key"/>
+                            </RadzenColumn>
+                            <RadzenColumn Size="6" SizeSM="9" SizeLG="11">
+                                @entry.Value
+                            </RadzenColumn>
+                        </RadzenRow>
+                    }
+
+                </RadzenStack>
+            </RadzenCard>
+        </RadzenColumn>
+    </RadzenRow>
+}
+
+@code{
+
+    private RenderFragment TtnNameRenderFragment => __builder =>
+    {
+        ViewModel.EntryName.Title = null;
+        <BxEntry ShowFrame="false" Entry="ViewModel.EntryName"/>
+    };
+
+    private RenderFragment TtnDescriptionRenderFragment => __builder =>
+    {
+        <BxEntry ShowFrame="false" Entry="ViewModel.EntryDescription"/>
+    };
+
+    private RenderFragment TtnZoneRenderFragment => __builder =>
+    {
+        <BxEntry ShowFrame="false" Entry="ViewModel.EntryTtnZone"/>
+    };
+
+    private RenderFragment TtnApiKeyRenderFragment => __builder =>
+    {
+        <BxEntry ShowFrame="false" Entry="ViewModel.EntryTtnApiKey"/>
+    };
+
+    private RenderFragment TtnAppIdRenderFragment => __builder =>
+    {
+        <BxEntry ShowFrame="false" Entry="ViewModel.EntryTtnAppId"/>
+    };
+
+    private RenderFragment TtnUserIdRenderFragment => __builder =>
+    {
+        <BxEntry ShowFrame="false" Entry="ViewModel.EntryTtnUserId"/>
+    };
+
+}

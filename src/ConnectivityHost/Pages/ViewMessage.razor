@@ -1,0 +1,33 @@
+﻿@page "/ViewMessage"
+@page "/ViewMessage/{Id:int}"
+
+@attribute [Authorize]
+
+@inherits ProjectRazorPage<VmMessage>
+
+@if (ViewModel != null!)
+{
+    <EntryControl Entry="@ViewModel.TitleEntry"></EntryControl>
+    <EntryControl Entry="@ViewModel.MessageEntry"></EntryControl>
+    <BxButton Item="ViewModel.CmdSend"/>
+}
+
+@code {
+
+    /// <summary>
+    ///     Entspricht VM OnLoaded, wird einmal pro View aufgerufen
+    /// </summary>
+    /// <returns></returns>
+    protected override Task OnViewLoaded()
+    {
+        if (ViewModel != null)
+        {
+            ViewModel.DcConnections = DcConnections;
+            ViewModel.ServerRemoteCalls = ServerRemoteCalls;
+            ViewModel.ServerRemoteCalls.SetClientConnection(ViewModel.DcConnections);
+        }
+
+        return base.OnViewLoaded();
+    }
+
+}

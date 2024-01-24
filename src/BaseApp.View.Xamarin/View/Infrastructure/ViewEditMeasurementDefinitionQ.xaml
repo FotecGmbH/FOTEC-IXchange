@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewEditMeasurementDefinitionQ"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bc="clr-namespace:BaseApp.View.Xamarin.Controls;assembly=BaseApp.View.Xamarin"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:bcm="http://biss.schemas.com/markupextensions"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:infrastructure="clr-namespace:BaseApp.ViewModel.Infrastructure;assembly=BaseApp"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resources="clr-namespace:Exchange.Resources;assembly=Exchange"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    d:DataContext="{x:Static infrastructure:VmEditMeasurementDefinition.DesignInstance}"
+    x:TypeArguments="infrastructure:VmEditMeasurementDefinition"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl>
+
+        <!--#region View Content-->
+        <ScrollView Margin="8">
+            <StackLayout Spacing="10">
+
+                <!--#region Stammdaten-->
+                <bcc:BxCollapseView HeaderTitle="Stammdaten">
+                    <Grid>
+                        <StackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditMeasurementDefinition.LblName}" />
+                                <bcc:BxEntry
+                                    Grid.Column="1"
+                                    EntryData="{Binding EntryName}"
+                                    HasFrame="False" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditMeasurementDefinition.LblDescription}" />
+                                <bcc:BxEntry
+                                    Grid.Column="1"
+                                    EntryData="{Binding EntryDescription}"
+                                    HasFrame="False" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditMeasurementDefinition.LblType}" />
+                                <bcc:BxPicker Grid.Column="1" ObservableCollectionSelectable="{Binding PickerMeasurementType}" SelectedItem="{Binding PickerMeasurementType.SelectedItem}" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditAbo.LblMessages}" />
+                                <Switch Grid.Column="1" IsToggled="{Binding MeasurementDefinitionAssignment.SendNotifications}" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditAbo.LblExceedValue}" />
+                                <Grid Grid.Column="1" ColumnDefinitions="*,4*">
+                                    <Switch IsToggled="{Binding DcListTypeOwnAbo.Data.ExceedNotify}" />
+                                    <bcc:BxEntry
+                                        Grid.Column="1"
+                                        EntryData="{Binding EntryExceedNotifyValue}"
+                                        HasFrame="False" />
+                                </Grid>
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditAbo.LblUndercutValue}" />
+                                <Grid Grid.Column="1" ColumnDefinitions="*,4*">
+                                    <Switch IsToggled="{Binding DcListTypeOwnAbo.Data.UndercutNotify}" />
+                                    <bcc:BxEntry
+                                        Grid.Column="1"
+                                        EntryData="{Binding EntryUndercutNotifyValue}"
+                                        HasFrame="False" />
+                                </Grid>
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditAbo.LblFailureMinutes}" />
+                                <Grid Grid.Column="1" ColumnDefinitions="*,4*">
+                                    <Switch IsToggled="{Binding DcListTypeOwnAbo.Data.FailureForMinutesNotify}" />
+                                    <bcc:BxEntry
+                                        Grid.Column="1"
+                                        EntryData="{Binding EntryFailureForMinutesNotifyValue}"
+                                        HasFrame="False" />
+                                </Grid>
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditAbo.LblMovingAverage}" />
+                                <Grid Grid.Column="1" ColumnDefinitions="*,4*">
+                                    <Switch IsToggled="{Binding DcListTypeOwnAbo.Data.MovingAverageNotify}" />
+                                    <bcc:BxEntry
+                                        Grid.Column="1"
+                                        EntryData="{Binding EntryMovingAverageNotifyValue}"
+                                        HasFrame="False" />
+                                </Grid>
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditMeasurementDefinition.LblMeasurementRated}" />
+                                <Switch Grid.Column="1" IsToggled="{Binding MeasurementDefinitionAssignment.NotificationOnNewRating}" />
+                            </Grid>
+                            <!--<Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditMeasurementDefinition.LblMeasurementSubscribed}" />
+                                <Switch Grid.Column="1" IsToggled="{Binding Data.NotificationOnSubscription}" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditMeasurementDefinition.LblMeasurementUnsubscribed}" />
+                                <Switch Grid.Column="1" IsToggled="{Binding Data.NotificationOnUnsubscription}" />
+                            </Grid>-->
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditMeasurementDefinition.LblSensorConnection}" />
+                                <bcc:BxPicker Grid.Column="1" ObservableCollectionSelectable="{Binding PickerDownstreamType}" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditMeasurementDefinition.LblAvailableTypes}" />
+                                <bcc:BxPicker Grid.Column="1" ObservableCollectionSelectable="{Binding PickerPredefinedMeasurements}" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditMeasurementDefinition.LblResearchInstituteAccessGranted}" />
+                                <Switch Grid.Column="1" IsToggled="{Binding MeasurementDefinitionAssignment.AccessForResearchInstitutesGranted}" />
+                            </Grid>
+                            <StackLayout IsVisible="{Binding IotDevice.Data.IsIotDotnetSensor}">
+                                <Grid ColumnDefinitions="*,*">
+                                    <Label Style="{StaticResource LabelStyEditDescription}" Text="Messintervall von Iot-Device:" />
+                                    <Switch Grid.Column="1" IsToggled="{Binding IotMeasurementInterval}" />
+                                </Grid>
+                                <Grid ColumnDefinitions="*,*">
+                                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{Binding EntryMeasurmentInterval.Title}" />
+                                    <bcc:BxEntry
+                                        Grid.Column="1"
+                                        EntryData="{Binding EntryMeasurmentInterval}"
+                                        HasFrame="False" />
+                                </Grid>
+                            </StackLayout>
+                        </StackLayout>
+                    </Grid>
+                </bcc:BxCollapseView>
+                <!--#endregion-->
+
+                <!--#region Virtueller (Float)-->
+                <bcc:BxCollapseView HeaderTitle="Zufällige Zahl" IsVisible="{Binding ShowVirtualFloat}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="24" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="4"
+                            Style="{StaticResource LabelStyEditHeader}"
+                            Text="Zufällige Zahl" />
+
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            IsVisible="{Binding IotDevice.Data.IsIotDotnetSensor}"
+                            Style="{StaticResource LabelStyEditDescription}"
+                            Text="{Binding EntryVirtPosLat.Title}" />
+                        <bcc:BxEntry
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            Margin="0,0,0,8"
+                            EntryData="{Binding EntryVirtPosLat}"
+                            HasFrame="False"
+                            IsVisible="{Binding IotDevice.Data.IsIotDotnetSensor}" />
+
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            IsVisible="{Binding IotDevice.Data.IsIotDotnetSensor}"
+                            Style="{StaticResource LabelStyEditDescription}"
+                            Text="{Binding EntryVirtPosLon.Title}" />
+                        <bcc:BxEntry
+                            Grid.Row="2"
+                            Grid.Column="3"
+                            Margin="0,0,0,8"
+                            EntryData="{Binding EntryVirtPosLon}"
+                            HasFrame="False"
+                            IsVisible="{Binding IotDevice.Data.IsIotDotnetSensor}" />
+
+                        <Label
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            IsVisible="{Binding IotDevice.Data.IsIotDotnetSensor}"
+                            Style="{StaticResource LabelStyEditDescription}"
+                            Text="{Binding EntryVirtPosRadius.Title}" />
+                        <bcc:BxEntry
+                            Grid.Row="4"
+                            Grid.Column="3"
+                            Margin="0,0,0,8"
+                            EntryData="{Binding EntryVirtPosRadius}"
+                            HasFrame="False"
+                            IsVisible="{Binding IotDevice.Data.IsIotDotnetSensor}" />
+
+                        <Label
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Style="{StaticResource LabelStyEditDescription}"
+                            Text="{Binding EntryVirtFloatMin.Title}" />
+                        <bcc:BxEntry
+                            Grid.Row="5"
+                            Grid.Column="3"
+                            Margin="0,0,0,8"
+                            EntryData="{Binding EntryVirtFloatMin}"
+                            HasFrame="False" />
+
+                        <Label
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Style="{StaticResource LabelStyEditDescription}"
+                            Text="{Binding EntryVirtFloatMax.Title}" />
+                        <bcc:BxEntry
+                            Grid.Row="6"
+                            Grid.Column="3"
+                            Margin="0,0,0,8"
+                            EntryData="{Binding EntryVirtFloatMax}"
+                            HasFrame="False" />
+
+                    </Grid>
+                </bcc:BxCollapseView>
+                <!--#endregion-->
+
+                <!--#region EntryCustomOpCode Value-->
+                <bcc:BxCollapseView HeaderTitle="Eigener OP - Code für State-Machine" IsVisible="{Binding ShowCustomOpCode}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="24" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="4"
+                            Style="{StaticResource LabelStyEditHeader}"
+                            Text="Eigener OP - Code für State-Machine" />
+
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Style="{StaticResource LabelStyEditDescription}"
+                            Text="{Binding EntryCustomOpCode.Title}" />
+                        <bcc:BxEntry
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            Margin="0,0,0,8"
+                            EntryData="{Binding EntryCustomOpCode}"
+                            HasFrame="False" />
+                    </Grid>
+                </bcc:BxCollapseView>
+                <!--#endregion-->
+
+                <!--#region Rückgabewert / "Raw" Value-->
+                <bcc:BxCollapseView HeaderSubTitle="" HeaderTitle="Rückgabewert des Messwerts">
+                    <Grid>
+                        <StackLayout>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="Typ:" />
+                                <StackLayout Grid.Column="1" Orientation="Vertical">
+                                    <bcc:BxPicker IsVisible="{Binding CanValuePickerChanged}" ObservableCollectionSelectable="{Binding PickerValueType}" />
+                                    <Label IsVisible="{Binding CanValuePickerChanged, Converter={StaticResource ConverterBoolInverted}}" Text="{Binding PickerValueType.SelectedItem.Description}" />
+                                </StackLayout>
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*" IsVisible="{Binding ShowEditPickerRawValueTypes}">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="Datentyp Sensor:" />
+                                <StackLayout Grid.Column="1" Orientation="Vertical">
+                                    <bcc:BxPicker IsVisible="{Binding CanEditPickerRawValueTypes}" ObservableCollectionSelectable="{Binding PickerRawValueTypes}" />
+                                    <Label IsVisible="{Binding CanEditPickerRawValueTypes, Converter={StaticResource ConverterBoolInverted}}" Text="{Binding PickerRawValueTypes.SelectedItem.Description}" />
+                                </StackLayout>
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*" IsVisible="{Binding ShowCanEditRawValueByteCount}">
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="Byte Anzahl:" />
+                                <StackLayout Grid.Column="1" Orientation="Vertical">
+                                    <bcc:BxEntry EntryData="{Binding EntryRawValueByteCount}" IsVisible="{Binding CanEditPickerRawValueTypes}" />
+                                    <Label IsVisible="{Binding CanEditPickerRawValueTypes, Converter={StaticResource ConverterBoolInverted}}" Text="{Binding ConfigBase.Base.RawValueDefinition.ByteCount}" />
+                                </StackLayout>
+                            </Grid>
+                        </StackLayout>
+                    </Grid>
+                </bcc:BxCollapseView>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="Advanced Mode" />
+                    <Switch Grid.Column="1" IsToggled="{Binding AdvancedMode}" />
+                </Grid>
+                <bcc:BxCollapseView
+                    HeaderSubTitle=""
+                    HeaderTitle="{x:Static resources:ResViewEditMeasurementDefinition.LblAdditionalDynamicData}"
+                    IsVisible="{Binding AdvancedMode}">
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditMeasurementDefinition.LblAdditionalSettings}" />
+                        <bcc:BxEntry
+                            Grid.Column="1"
+                            EntryData="{Binding EntryAdditionalProperties}"
+                            HasFrame="False" />
+                    </Grid>
+                </bcc:BxCollapseView>
+            </StackLayout>
+        </ScrollView>
+        <!--#endregion-->
+
+    </bcc:PageControl>
+</view:BissContentPage>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewNotifications"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:connectivity="clr-namespace:BaseApp.Connectivity;assembly=BaseApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    xmlns:viewmodels="clr-namespace:BaseApp.ViewModel;assembly=BaseApp"
+    x:Name="ViewNotificationsRef"
+    d:DataContext="{x:Static viewmodels:VmNotifications.DesignInstance}"
+    x:TypeArguments="viewmodels:VmNotifications"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl>
+        <Grid
+            Margin="8"
+            RowDefinitions="Auto,*"
+            RowSpacing="10">
+            <Label FontSize="{StaticResource FontSizeLarge}" Text="{Binding PageTitle}" />
+            <ListView
+                Grid.Row="1"
+                ItemsSource="{Binding Dc.DcExNotifications}"
+                RowHeight="130">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="connectivity:DcListTypeNotification">
+                        <ViewCell>
+                            <Grid RowDefinitions="*,*,*,*, *" RowSpacing="5">
+                                <Label Text="{Binding Data.NotificationType, Converter={StaticResource ConverterEnumDisplayName}, StringFormat='Benachrichtigungstyp:{0}'}" />
+                                <Label Grid.Row="1" Text="{Binding Data.Description}" />
+                                <Label Grid.Row="2" Text="{Binding Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information.Name}" />
+                                <Label Grid.Row="3" Text="{Binding Data.MeasurementDefinitionAssignment.Type, Converter={StaticResource ConverterEnumDisplayName}}" />
+                                <Label Grid.Row="4" Text="{Binding Data.TimeStamp, StringFormat='{0:dd.MM.yyyy HH:mm:ss}'}" />
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ViewModel.CmdOpenDetailView, Source={x:Reference ViewNotificationsRef}}" CommandParameter="{Binding}" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </bcc:PageControl>
+</view:BissContentPage>

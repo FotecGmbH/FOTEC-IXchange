@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="BaseApp.View.Xamarin.Controls.IxChangeRating"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:BaseApp.View.Xamarin.Controls;assembly=BaseApp.View.Xamarin"
+    xmlns:converter="http://biss.schemas.com/coreconverter"
+    xmlns:resources="clr-namespace:Exchange.Resources;assembly=Exchange"
+    x:Name="IxChangeRatingRef">
+    <ContentView.Resources>
+        <converter:ConverterBooleanValueColor
+            x:Key="ConverterStarColor"
+            ColorFalse="Gray"
+            ColorTrue="Orange" />
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid BindingContext="{x:Reference IxChangeRatingRef}">
+            <StackLayout
+                BindableLayout.ItemsSource="{Binding StarsList}"
+                Orientation="Horizontal"
+                Spacing="5">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="controls:Rating">
+                        <Label
+                            BackgroundColor="Transparent"
+                            FontFamily="{StaticResource StreamLineIcons}"
+                            FontSize="{StaticResource FontSizeDefault}"
+                            HorizontalOptions="Center"
+                            Text="{x:Static resources:Glyphs.Rating_star}"
+                            TextColor="{Binding Filled, Converter={StaticResource ConverterStarColor}}"
+                            VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CmdSetRating, Source={x:Reference IxChangeRatingRef}}" CommandParameter="{Binding Index}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+        </Grid>
+
+    </ContentView.Content>
+</ContentView>

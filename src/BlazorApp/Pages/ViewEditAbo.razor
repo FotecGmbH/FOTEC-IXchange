@@ -1,0 +1,100 @@
+﻿@page "/vieweditabo"
+@page "/vieweditabo/{Id:int}"
+
+@using Exchange.Extensions
+@using BlazorApp.Components
+@inherits ProjectRazorPage<VmEditAbo>
+
+@if (ViewModel != null)
+{
+    <RadzenStack Gap="20px">
+        <PageHeader Text="@ViewModel.PageTitle"/>
+
+        <RadzenStack Gap="10px">
+
+            @foreach (var entry in dictionary)
+            {
+                <RadzenRow>
+                    <RadzenColumn Size="6" SizeMD="3">
+                        @if (entry.Key is string text)
+                        {
+                            <RadzenLabel Text="@text"/>
+                        }
+                        else if (entry.Key is RadzenLabel label)
+                        {
+                            @label
+                        }
+                        else if (entry.Key is RenderFragment renderFragment)
+                        {
+                            @renderFragment
+                        }
+
+                    </RadzenColumn>
+                    <RadzenColumn Size="6" SizeMD="9">
+                        @if (entry.Value != null)
+                        {
+                            @entry.Value
+                        }
+                    </RadzenColumn>
+                </RadzenRow>
+            }
+
+        </RadzenStack>
+
+        <BxButton BissCommand="ViewModel.View.CmdSaveHeader" BxButtonType="EnumBxButtonType.JustText" ButtonStyle="ButtonStyle.Primary"/>
+    </RadzenStack>
+}
+
+@code
+{
+    private RenderFragment NameRenderFragment =>
+        @<RadzenLabel Text="@ViewModel.Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information.Name"/>;
+
+    private RenderFragment DescriptionRenderFragment =>
+        @<RadzenLabel Text="@ViewModel.Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information.Description"/>;
+
+    private RenderFragment TypeRenderFragment =>
+        @<RadzenLabel Text="@ViewModel.Data.MeasurementDefinitionAssignment.Type.GetDisplayName()"/>;
+
+    private RenderFragment SensorConnectionRenderFragment =>
+        @<RadzenLabel Text="@ViewModel.Data.MeasurementDefinitionAssignment.MeasurementDefinition.DownstreamType.GetDisplayName()"/>;
+
+    private RenderFragment ExceedRenderFragment =>
+        @<RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenCheckBox @bind-Value="ViewModel.Data.ExceedNotify"/>
+            <BxEntry Entry="ViewModel.EntryExceedNotifyValue" ShowFrame="false"/>
+    </RadzenStack>;
+
+    private RenderFragment UndercutRenderFragment =>
+        @<RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenCheckBox @bind-Value="ViewModel.Data.UndercutNotify"/>
+            <BxEntry Entry="ViewModel.EntryUndercutNotifyValue" ShowFrame="false"/>
+    </RadzenStack>;
+
+    private RenderFragment FailureMinutesRenderFragment =>
+        @<RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenCheckBox @bind-Value="ViewModel.Data.FailureForMinutesNotify"/>
+            <BxEntry Entry="ViewModel.EntryFailureForMinutesNotifyValue" ShowFrame="false"/>
+    </RadzenStack>;
+
+    private RenderFragment MovingAverageRenderFragment =>
+        @<RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenCheckBox @bind-Value="ViewModel.Data.MovingAverageNotify"/>
+            <BxEntry Entry="ViewModel.EntryMovingAverageNotifyValue" ShowFrame="false"/>
+    </RadzenStack>;
+
+    private RenderFragment CostsRenderFragment =>
+        @<RadzenLabel Text="@ViewModel.Data.MeasurementDefinitionAssignment.CostsAsString"/>;
+
+    private RenderFragment RatingRenderFragment =>
+        @<RadzenStack>
+            <IXChangeRating ReadOnly="true" Value="@ViewModel.Data.MeasurementDefinitionAssignment.TotalRatingInt"/>
+            <RadzenLabel class="linkStyle" Text="@($"({ViewModel.Data.MeasurementDefinitionAssignment.NumberOfRatingsAsString})")" @onclick="OpenRatingsModal"/>
+    </RadzenStack>;
+
+    private RenderFragment GetSubheadingLabel(string text, bool italic = true) =>
+        @<RadzenText Text="@text" Style="@(italic ? "font-style: italic" : string.Empty)"/>;
+
+    private RenderFragment GetIndentedLabel(string labelText, int marginLeft = 20) =>
+        @<RadzenLabel Text="@labelText" Style="@($"margin-left: {marginLeft}px")"/>;
+}

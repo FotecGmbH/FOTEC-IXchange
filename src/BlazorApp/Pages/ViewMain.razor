@@ -1,0 +1,35 @@
+﻿@page "/ViewMain"
+@page "/ViewMain/{Id:int}"
+@using Exchange.Extensions
+@using Biss.Apps.Map.Blazor.OpenStreetMap.Controls
+@using Exchange.Enum
+@inherits ProjectRazorPage<VmMain>
+
+@if (ViewModel != null)
+{
+    <div style="position: relative;">
+        <div style="position: absolute; margin-left: auto; margin-right: auto; margin-top: 20px; left: 100px; right: 50px; text-align: center; z-index: 99999">
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+                <RadzenTextBox Style="width: 90%" Placeholder="@ResViewMain.SearchBoxPlaceholder" Name="searchbox" @bind-Value="@ViewModel.SensorSearch"/>
+                <RadzenButton ButtonStyle="@(ViewModel.TypesFilter?.Any() ?? false ? ButtonStyle.Danger : ButtonStyle.Light)" Icon="filter_alt" Click="OpenFilterSensorsMenu"/>
+            </RadzenStack>
+        </div>
+        <BissMapOpenStreetMap/>
+
+    </div>
+}
+
+@code{
+
+    private RenderFragment<DialogService> FilterSensorsFragment => ds =>
+        @<RadzenStack Gap="5px">
+            @foreach (var type in Enum.GetValues<EnumMeasurementType>())
+            {
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="3px">
+                    <RadzenCheckBox TValue="bool" ValueChanged="b => ViewModel!.ChangeFilter(b, type)" Value="ViewModel!.TypesFilter.Contains(type)"/>
+                    <RadzenText Text="@type.GetDisplayName()"/>
+                </RadzenStack>
+            }
+    </RadzenStack>;
+
+}

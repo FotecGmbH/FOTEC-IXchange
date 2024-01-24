@@ -1,0 +1,325 @@
+<SetRoot ProjectId="NETIDEE.IXchange" KeyVault="https://bissprodkeyvault.vault.azure.net/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:noNamespaceSchemaLocation="bs.xsd">
+	<TargetDirectories>
+		<SetProject RootFolder="Exchange" CsSettings="Exchange" />
+		<SetProject RootFolder="WebExchange" CsSettings="WebExchange"/>
+		<SetProject RootFolder="BlazorApp" />
+		<SetProject RootFolder="AndroidApp" />
+		<SetProject RootFolder="IOsApp" />
+		<SetProject RootFolder="WpfApp" />
+		<SetProject RootFolder="BaseApp" />
+		<SetProject RootFolder="BaseApp.View.Xamarin" />
+		<SetProject RootFolder="ConnectivityHost" CommonFile="LaunchConnectivityHost"/>
+		<SetProject RootFolder="IXchange.Database" />
+		<SetProject RootFolder="IXchange.Gateway" />
+		<SetProject RootFolder="IXchange.GatewayService" />
+		<SetProject RootFolder="IXchange.Service.AppConnectivity" />
+		<SetProject RootFolder="IXchange.Service.TriggerAgent" />
+		<SetProject RootFolder="IXchange.Service.Com.Base" />
+		<SetProject RootFolder="IXchange.Service.Com.Rest" />
+	</TargetDirectories>
+	<CsSettings>
+		<SetCsSetting FileName="AppSettings.cs" ForCsSettings="Exchange" Usings="Exchange.Interfaces Biss.Apps.Components Biss.Apps.Map.Interface Biss.Apps.Connectivity.Interfaces Biss.Apps.Connectivity.Sa Biss.Apps.Enum Biss.Apps.Interfaces Biss.Apps.Model Biss.Dc.Client Biss.Apps.Push.Interfaces" Interfaces="IAppSettings IAppSettingsNavigation IAppSettingsMap IAppSettingsFiles IAppSettingConnectivity IAppSettingsPush IAppSettingsLinks" />
+		<SetCsSetting FileName="WebSettings.cs" ForCsSettings="WebExchange" Usings="Biss.Apps.Service.Push WebExchange.Interfaces" Interfaces="IWebSettingsAzureFiles IAppServiceSettingPush IAppSettingsDataBase IAppSettingsEMail" />
+	</CsSettings>
+	<Properties>
+		<SetProp Description="Produktversion" DefaultValue="1.1.0" PropType="Version" IsRequiredValue="true">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/Version" />
+				<SetTarget TargetType="AssemblyInfo" Destinations="AssemblyVersion AssemblyFileVersion" />
+				<SetTarget TargetType="AndroidManifest" Destinations="manifest#android:versionName" />
+				<SetTarget TargetType="InfoPlist" Destinations="CFBundleVersion CFBundleShortVersionString" />
+				<SetTarget TargetType="CsSetting" Destinations="AppVersion" CsSettings="Exchange" />
+			</Targets>
+			<BranchValues>
+				<SetBranchValue BranchName="ixchangedev" Value="1.1.0" />
+			</BranchValues>
+		</SetProp>
+		<SetProp Description="SignalR für DC und Gateways" DefaultValue="https://ixchangebackend.azurewebsites.net">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="DcSignalHost" CsSettings="Exchange" />
+				<SetTarget TargetType="CommonFile" Destinations="Host"/>
+				<SetTarget TargetType="LaunchSettings" Destinations="iisSettings/iisExpress#applicationUrl profiles/ServerApp#applicationUrl" OnlyForProject="ConnectivityHost"/>
+			</Targets>
+			<BranchValues>
+				<SetBranchValue BranchName="ixchangedev" Value="https://ixchangebackend.azurewebsites.net">
+				</SetBranchValue>
+			</BranchValues>
+		</SetProp>
+		<SetProp Description="SA Host - REST" DefaultValue="https://ixchangebackend.azurewebsites.net/api/">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="SaApiHost" CsSettings="Exchange" />
+			</Targets>
+			<BranchValues>
+				<SetBranchValue BranchName="ixchangedev" Value="https://ixchangebackend.azurewebsites.net/api/">
+				</SetBranchValue>
+			</BranchValues>
+		</SetProp>
+
+		<!--#region IAppSettingsMap-->
+
+		<SetProp Description="Bing Maps Key - WPF" DefaultValue="">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="BingMapsKey" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Google Maps Key Android und Blazor" DefaultValue="">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="GoogleMapsKey" CsSettings="Exchange" />
+				<SetTarget TargetType="AndroidManifest" Destinations="manifest/application/meta-data#android:value##android:name=com.google.android.geo.API_KEY"/>
+				<SetTarget TargetType="IndexHtml" Destinations="GOOGLEMAPKEY"/>
+			</Targets>
+		</SetProp>
+
+		<!--#endregion IAppSettingsMap-->
+
+		<SetProp Description="App mit User" DefaultValue="true">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="DcUseUser" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="App Name" DefaultValue="IXchange">
+			<Targets>
+				<SetTarget TargetType="AndroidManifest" Destinations="manifest/application#android:label" />
+				<SetTarget TargetType="InfoPlist" Destinations="CFBundleDisplayName" />
+				<SetTarget TargetType="CsSetting" Destinations="AppName" CsSettings="Exchange" />
+			</Targets>
+			<BranchValues>
+				<SetBranchValue BranchName="ixchangedev" Value="IXchange Dev" />
+			</BranchValues>
+		</SetProp>
+		<SetProp Description="App Identifier" DefaultValue="at.fotec.biss.ixchange">
+			<Targets>
+				<SetTarget TargetType="AndroidManifest" Destinations="manifest#package" />
+				<SetTarget TargetType="InfoPlist" Destinations="CFBundleIdentifier" />
+				<SetTarget TargetType="CsSetting" Destinations="PackageName" CsSettings="Exchange" />
+			</Targets>
+			<BranchValues>
+				<SetBranchValue BranchName="ixchangedev" Value="at.fotec.biss.ixchange.dev" />
+			</BranchValues>
+		</SetProp>
+		<SetProp Description="App Ordner auf Plattform" DefaultValue="IXchangeFolder">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="ProjectWorkUserFolder" CsSettings="Exchange" />
+			</Targets>
+			<BranchValues>
+				<SetBranchValue BranchName="ixchangedev" Value="IXchangeFolderDev" />
+			</BranchValues>
+		</SetProp>
+		<SetProp Description="Push - Firebase Project Id - &lt;inheritdoc cref=&quot;IAppServiceSettingPush.PushProjectId&quot;/&gt;" DefaultValue="">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="PushProjectId" CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Push - Firebase Service Account Id - &lt;inheritdoc cref=&quot;IAppServiceSettingPush.PushServiceAccountId&quot;/&gt;" DefaultValue="_">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="PushServiceAccountId" CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Push - Firebase Private Key Id - &lt;inheritdoc cref=&quot;IAppServiceSettingPush.PushPrivateKeyId&quot;/&gt;" DefaultValue="_">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="PushPrivateKeyId " CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Push - Firebase Private Key - &lt;inheritdoc cref=&quot;IAppServiceSettingPush.PushPrivateKey&quot;/&gt;" DefaultValue="_">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="PushPrivateKey " CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Id des Notification-Channels" DefaultValue="DefaultId">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="NotificationChannelId" CsSettings="Exchange"/>
+			</Targets>
+		</SetProp>
+		<SetProp Description="Name des Notification-Channels" DefaultValue="PushBenachrichtigungen">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="NotificationChannelName" CsSettings="Exchange"/>
+			</Targets>
+		</SetProp>
+		<SetProp Description="Standard Topic" DefaultValue="DEFAULT">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="DefaultTopic" CsSettings="Exchange"/>
+			</Targets>
+		</SetProp>
+		<SetProp Description="Datenbank" DefaultValue="ixchangedb_dev">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="ConnectionStringDb" CsSettings="WebExchange" />
+			</Targets>
+			<BranchValues>
+				<SetBranchValue BranchName="ixchangedev" Value="ixchangedb_dev" />
+			</BranchValues>
+		</SetProp>
+		<SetProp Description="Datenbank-Server" DefaultValue="NETIDEE:IXCHANGE:SqlServer" IsRequiredValue="true" IsSecureProperty="true">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="ConnectionStringDbServer" CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Datenbank User" DefaultValue="NETIDEE:IXCHANGE:SqlServerUser" IsRequiredValue="true" IsSecureProperty="true">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="ConnectionStringUser" CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Datenbank User Passwort" DefaultValue="NETIDEE:IXCHANGE:SqlServerPassword" IsRequiredValue="true" IsSecureProperty="true">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="ConnectionStringUserPwd" CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Connection string für den Blob" DefaultValue="NETIDEE:IXCHANGE:BlobConString" IsRequiredValue="true" IsSecureProperty="true">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="BlobConnectionString" CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Container Name im Blob" DefaultValue="ixchangeblobrelease">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="BlobContainerName" CsSettings="WebExchange" />
+			</Targets>
+			<BranchValues>
+				<SetBranchValue BranchName="ixchangedev" Value="ixchangeblobdev" />
+			</BranchValues>
+		</SetProp>
+		<SetProp Description="Cdn link oder public Bloblink für Filelink" DefaultValue="https://ixchangeblobdev.blob.core.windows.net/">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="CdnLink" CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Als wer (E-Mail Adresse) wird gesendet (für Antworten)" DefaultValue="biss@fotec.at">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="SendEMailAs" CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Welcher Name des Senders wird angezeigt" DefaultValue="IXchange">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="SendEMailAsDisplayName" CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Sendgrid Key (falls Sendgrid verwendet wird)" DefaultValue="_">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="SendGridApiKey" CsSettings="WebExchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="In welchen Assembly befinden sich die Xamarin.Forms Views" DefaultValue="BaseApp.View.Xamarin">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="DefaultViewAssembly" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="In welchen Namespace befinden sich die Xamarin.Forms Views" DefaultValue="BaseApp.View.Xamarin.View.">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="DefaultViewNamespace" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="App Orientation" DefaultValue="EnumAppOrientation.Auto">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="AppOrientationOverride" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Produktinformationen" DefaultValue="IXchange">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/Product" />
+				<SetTarget TargetType="AssemblyInfo" Destinations="AssemblyTitle AssemblyProduct" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Produktbeschreibung" DefaultValue="IoT Datentausch leicht gemacht">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/Description" />
+				<SetTarget TargetType="AssemblyInfo" Destinations="AssemblyDescription" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Firmeninformationen" DefaultValue="FOTEC Forschungs- und Technologietransfer GmbH">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/Company" />
+				<SetTarget TargetType="AssemblyInfo" Destinations="AssemblyCompany" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Copyright Infos" DefaultValue="(C) 2009-2022 FOTEC Forschungs- und Technologietransfer GmbH">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/Copyright" />
+				<SetTarget TargetType="AssemblyInfo" Destinations="AssemblyCopyright AssemblyTrademark" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Author(en)" DefaultValue="FOTEC BISS Developers">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/Authors" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Öffentlicher Link zum Projekt" DefaultValue="https://www.fotec.at">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/PackageProjectUrl" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Typ des Repo" DefaultValue="git">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/RepositoryType" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Repository Url" DefaultValue="-">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/RepositoryUrl" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Tags für das Repro/Projekt" DefaultValue="BISS">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/PackageTags" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Nuget Icon" DefaultValue="nugetImage.png">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/PackageIcon" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Changelog / Release Notes" DefaultValue="In Readme.md">
+			<Targets>
+				<SetTarget TargetType="CsProj" Destinations="Project/PropertyGroup/PackageReleaseNotes" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="App im Playstore" DefaultValue="">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="DroidLink" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="App im Appstore" DefaultValue="">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="IosLink" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="App im Windows Store" DefaultValue="https://www.fotec.at">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="WindowsLink" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Deployte BlazorApp" DefaultValue="">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="BlazorLink" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Link zum Appcenter iOS" DefaultValue="">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="IosTelemetryLink" CsSettings="Exchange" />
+			</Targets>
+			<BranchValues>
+				<SetBranchValue BranchName="ixchangedev" Value="" />
+			</BranchValues>
+		</SetProp>
+		<SetProp Description="Link zum Appcenter Android" DefaultValue="">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="DroidTelemetryLink" CsSettings="Exchange" />
+			</Targets>
+			<BranchValues>
+				<SetBranchValue BranchName="ixchangedev" Value="" />
+			</BranchValues>
+		</SetProp>
+		<SetProp Description="Link zu Application Insights" DefaultValue="">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="BlazorTelemetryLink" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Link zu Portal.azure" DefaultValue="">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="AzureResourceLink" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+		<SetProp Description="Link zu Fotec DevOps" DefaultValue="-">
+			<Targets>
+				<SetTarget TargetType="CsSetting" Destinations="DevOpsLink" CsSettings="Exchange" />
+			</Targets>
+		</SetProp>
+	</Properties>
+</SetRoot>

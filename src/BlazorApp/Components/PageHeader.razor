@@ -1,0 +1,32 @@
+﻿<RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceAround" Style="margin-bottom: 30px">
+    <RadzenText TextStyle="TextStyle.H4">
+        @if (Text is null)
+        {
+            @if (ChildContent is not null)
+            {
+                @ChildContent
+            }
+        }
+        else
+        {
+            @Text
+        }
+    </RadzenText>
+</RadzenStack>
+
+@code {
+
+    /// <summary>
+    /// ChildContent => Setting Text property will override this
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Text
+    /// </summary>
+    [Parameter]
+    public string? Text { get; set; }
+
+
+}

@@ -1,0 +1,164 @@
+@page "/ViewConfigs"
+@page "/ViewConfigs/{Id:int}"
+@using BlazorApp.Components
+@inherits ProjectRazorPage<VmConfigs>
+
+@if (ViewModel != null!)
+{
+    <RadzenRow>
+        <RadzenColumn>
+            <RadzenStack>
+                <PageHeader Text="@ResViewConfigs.PageTitle"/>
+
+                @foreach (var entry in dictionary)
+                {
+                    <RadzenRow>
+                        <RadzenColumn Size="6" SizeMD="3">
+                            <RadzenLabel class="labelstyeditdescription" Text="@entry.Key"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="6" SizeMD="9">
+                            @entry.Value
+                        </RadzenColumn>
+                    </RadzenRow>
+                }
+
+            </RadzenStack>
+        </RadzenColumn>
+        @* <RadzenColumn>
+            <RadzenStack>
+                <RadzenLabel>Dynamische Konfiguration</RadzenLabel>
+                <RadzenLabel>@ViewModel.AdditionalConfiguration</RadzenLabel>
+            </RadzenStack>
+        </RadzenColumn> *@
+    </RadzenRow>
+}
+
+@code{
+
+    /// <summary>
+    /// Account render fragment
+    /// </summary>
+    private RenderFragment TtnAccountRenderFragment => __builder =>
+    {
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start">
+            <BxPicker PickerInstance="@ViewModel.PickerCopanyTtnConfigs" @bind-SelectedItem="@ViewModel.PickerCopanyTtnConfigs.SelectedItem"/>
+            <BxButton BissCommand="ViewModel.PickerCopanyTtnConfigs.CmdAddItem"
+                      ButtonStyle="ButtonStyle.Primary"
+                      BxButtonType="EnumBxButtonType.JustGlyph"/>
+            <BxButton BissCommand="ViewModel.PickerCopanyTtnConfigs.CmdRemoveItem"
+                      ExecutionParameter="ViewModel.PickerCopanyTtnConfigs.SelectedItem"
+                      ButtonStyle="ButtonStyle.Danger"
+                      BxButtonType="EnumBxButtonType.JustGlyph"/>
+            <BxButton BissCommand="ViewModel.PickerCopanyTtnConfigs.CmdEditItem"
+                      ExecutionParameter="ViewModel.PickerCopanyTtnConfigs.SelectedItem"
+                      ButtonStyle="ButtonStyle.Secondary"
+                      BxButtonType="EnumBxButtonType.JustGlyph"/>
+        </RadzenStack>
+    };
+
+    /// <summary>
+    /// Iot device render fragment
+    /// </summary>
+    private RenderFragment TtnIotDeviceIdRenderFragment => __builder =>
+    {
+        <BxEntry Entry="ViewModel.EntryTtnDeviceId" ShowFrame="false"/>
+    };
+
+    /// <summary>
+    /// description renderfragment
+    /// </summary>
+    private RenderFragment TtnDescriptionRenderFragment => __builder =>
+    {
+        <BxEntry Entry="ViewModel.EntryTtnDescription" ShowFrame="false"/>
+    };
+
+    /// <summary>
+    /// generate dev eui renderfragment
+    /// </summary>
+    private RenderFragment TtnGenerateDevEuiRenderFragment => __builder =>
+    {
+        <RadzenSwitch @bind-Value="@ViewModel.GenerateDevEui"/>
+    };
+
+    /// <summary>
+    /// dev eui renderfragment
+    /// </summary>
+    private RenderFragment TtnDevEuiRenderFragment => __builder =>
+    {
+        <BxEntry Entry="ViewModel.EntryTtnDevEui" Disabled="@ViewModel.GenerateDevEui" ShowFrame="false"/>
+    };
+
+    /// <summary>
+    /// generate app eui renderfragment
+    /// </summary>
+    private RenderFragment TtnGenerateAppEuiRenderFragment => __builder =>
+    {
+        <RadzenSwitch @bind-Value="@ViewModel.GenerateAppEui"/>
+    };
+
+    /// <summary>
+    /// app eui renderfragment
+    /// </summary>
+    private RenderFragment TtnAppEuiRenderFragment => __builder =>
+    {
+        <BxEntry Entry="ViewModel.EntryTtnAppEui" Disabled="@ViewModel.GenerateAppEui" ShowFrame="false"/>
+    };
+
+    /// <summary>
+    /// generate app key renderfragment
+    /// </summary>
+    private RenderFragment TtnGenerateAppKeyRenderFragment => __builder =>
+    {
+        <RadzenSwitch @bind-Value="@ViewModel.GenerateAppKey"/>
+    };
+
+    /// <summary>
+    /// app key renderfragment
+    /// </summary>
+    private RenderFragment TtnAppKeyRenderFragment => __builder =>
+    {
+        <BxEntry Entry="ViewModel.EntryTtnAppKey" Disabled="@ViewModel.GenerateAppKey" ShowFrame="false"/>
+    };
+
+    /// <summary>
+    /// join renderfragment
+    /// </summary>
+    private RenderFragment TtnSupportsJoinRenderFragment => __builder =>
+    {
+        <RadzenSwitch @bind-Value="@ViewModel.Ttn.SupportsJoin"/>
+    };
+
+    /// <summary>
+    /// create device renderfragment
+    /// </summary>
+    private RenderFragment TtnCreateDeviceRenderFragment => __builder =>
+    {
+        <RadzenSwitch @bind-Value="@ViewModel.Ttn.CreateDeviceOnTtn"/>
+    };
+
+    /// <summary>
+    /// lora version renderfragment
+    /// </summary>
+    private RenderFragment TtnLorawanVersionRenderFragment => __builder =>
+    {
+        <BxPicker PickerInstance="@ViewModel.PickerEnumLorawanVersion" @bind-SelectedItem="@ViewModel.PickerEnumLorawanVersion.SelectedItem"/>
+    };
+
+    /// <summary>
+    /// lora physical version renderfragment
+    /// </summary>
+    private RenderFragment TtnLorawanPhysicalVersionRenderFragment => __builder =>
+    {
+        <BxPicker PickerInstance="@ViewModel.PickerEnumLorawanPhysicalVersion" @bind-SelectedItem="@ViewModel.PickerEnumLorawanPhysicalVersion.SelectedItem"/>
+    };
+
+    /// <summary>
+    /// lora frequency plan renderfragment
+    /// </summary>
+    private RenderFragment TtnLorawanFrequencyPlanIdRenderFragment => __builder =>
+    {
+        <BxPicker PickerInstance="@ViewModel.PickerEnumLorawanFrequencyPlanId" @bind-SelectedItem="@ViewModel.PickerEnumLorawanFrequencyPlanId.SelectedItem"/>
+    };
+
+
+}

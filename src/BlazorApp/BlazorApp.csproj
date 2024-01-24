@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<!-- Package Infos -->
+		<Product>IXchange</Product>
+		<Description>IoT Datentausch leicht gemacht</Description>
+		<Company>FOTEC Forschungs- und Technologietransfer GmbH</Company>
+		<Copyright>(C) 2009-2022 FOTEC Forschungs- und Technologietransfer GmbH</Copyright>
+		<Authors>FOTEC BISS Developers</Authors>
+		<PackageProjectUrl>https://www.fotec.at</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>BISS</PackageTags>
+		<Version>1.1.0</Version>
+		<PackageIcon>nugetImage.png</PackageIcon>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageReleaseNotes>In Readme.md</PackageReleaseNotes>
+		<!-- Projekt Einstellungen -->
+		<Nullable>Enable</Nullable>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+		<RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+		<RunAnalyzers>true</RunAnalyzers>
+		<!-- Build Einstellungen -->
+		<RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+		<SignAssembly>false</SignAssembly>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<DebugType>embedded</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageCopyToOutput>true</PackageCopyToOutput>
+		<NoWarn>NU1701;NU1702;NU5104;AD0001</NoWarn>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<RepositoryUrl>-</RepositoryUrl>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Biss.Apps.Blazor" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Map" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Map.Blazor" Version="8.3.2" />
+		<PackageReference Include="Biss.Apps.Map.Blazor.OpenStreetMap" Version="8.1.17" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.7" PrivateAssets="all" />
+		<PackageReference Include="Biss.Apps.Connectivity.Blazor" Version="8.1.17" />
+		<PackageReference Include="Radzen.Blazor" Version="4.17.1" />
+		<PackageReference Include="System.Net.Http.Json" Version="7.0.1" />
+		<PackageReference Include="UAParser" Version="3.1.47" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BaseApp\BaseApp.csproj" />
+		<ProjectReference Include="..\Exchange\Exchange.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Remove="compilerconfig.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="compilerconfig.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Properties\" />
+		<Folder Include="wwwroot\bib\" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="wwwroot\css\streamline\demo-files\demo.js" />
+		<None Include="wwwroot\css\streamline\fonts\StreamLineIconsLight.ttf" />
+		<None Include="wwwroot\css\streamline\fonts\StreamLineIconsLight.woff" />
+		<None Include="wwwroot\css\styles\StyHeader.scss" />
+		<None Include="wwwroot\css\styles\StyMenu.scss" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Update="wwwroot\css\app.css">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\css\site.scss">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\favicon.ico">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\fonts\MaterialIcons-Regular.woff">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+</Project>

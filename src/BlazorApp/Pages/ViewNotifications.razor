@@ -1,0 +1,36 @@
+﻿@page "/viewnotifications"
+@page "/viewnotifications/{Id:int}"
+
+@using Exchange.Extensions
+@using BlazorApp.Components
+@using BaseApp.Connectivity
+@inherits ProjectRazorPage<VmNotifications>
+
+@if (ViewModel is not null)
+{
+    <RadzenStack Gap="20px">
+        <PageHeader Text="@ViewModel.PageTitle"/>
+
+        <BxCollectionView Data="ViewModel.Dc.DcExNotifications"
+                          TItem="DcListTypeNotification"
+                          RowDoubleClick="a => ViewModel.CmdOpenDetailView.Execute(a.Data)">
+            <Columns>
+                <RadzenDataGridColumn TItem="DcListTypeNotification" Title="@ResViewNotifications.GridColumnHeaderType" Property="@($"{nameof(DcListTypeNotification.Data)}.{nameof(DcListTypeNotification.Data.NotificationType)}")">
+                    <Template>
+                        @context.Data.NotificationType.GetDisplayName()
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="DcListTypeNotification" Title="@ResViewNotifications.GridColumnHeaderDescription" Property="@($"{nameof(DcListTypeNotification.Data)}.{nameof(DcListTypeNotification.Data.Description)}")" MinWidth="300px" Width="600px"/>
+                <RadzenDataGridColumn TItem="DcListTypeNotification" Title="@ResViewNotifications.GridColumnHeaderSensor" Property="@($"{nameof(DcListTypeNotification.Data)}.{nameof(DcListTypeNotification.Data.MeasurementDefinitionAssignment)}.{nameof(DcListTypeNotification.Data.MeasurementDefinitionAssignment.MeasurementDefinition)}.{nameof(DcListTypeNotification.Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information)}.{nameof(DcListTypeNotification.Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information.Name)}")"/>
+                <RadzenDataGridColumn TItem="DcListTypeNotification" Title="@ResViewNotifications.GridColumnHeaderMeasurementValue" Property="@($"{nameof(DcListTypeNotification.Data)}.{nameof(DcListTypeNotification.Data.MeasurementDefinitionAssignment)}.{nameof(DcListTypeNotification.Data.MeasurementDefinitionAssignment.Type)}")">
+                    <Template>
+                        @context.Data.MeasurementDefinitionAssignment.Type.GetDisplayName()
+                    </Template>
+
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="DcListTypeNotification" Title="@ResViewNotifications.GridColumnHeaderTimeStamp" Property="@($"{nameof(DcListTypeNotification.Data)}.{nameof(DcListTypeNotification.Data.TimeStamp)}")" FormatString="{0:dd.MM.yyyy_hh:mm:ss}"/>
+            </Columns>
+        </BxCollectionView>
+
+    </RadzenStack>
+}

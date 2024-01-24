@@ -1,0 +1,86 @@
+﻿@using BaseApp.Connectivity
+@using Biss.Apps
+<RadzenStack Style="width: 100%">
+    <IXChangeRating @bind-Value="@Rating.Data.Rating"
+                    ReadOnly="false"/>
+
+    <RadzenTextArea @bind-Value="@Rating.Data.Description"
+                    Placeholder="Bewertung eingeben"/>
+
+    <BxButton BissCommand="CmdSaveRating"
+              BxButtonType="EnumBxButtonType.JustText"/>
+</RadzenStack>
+
+@code {
+
+    /// <summary>
+    /// DialogService
+    /// </summary>
+    [Inject]
+    public DialogService DialogService { get; set; }
+
+    /// <summary>
+    /// Bewertung
+    /// </summary>
+    [Parameter]
+    [EditorRequired]
+    public DcListTypeRating Rating { get; set; }
+
+    /// <summary>
+    /// Cmd um Rating zu speichern
+    /// </summary>
+    public VmCommand CmdSaveRating { get; set; }
+
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its
+    /// initial parameters from its parent in the render tree.
+    /// Override this method if you will perform an asynchronous operation and
+    /// want the component to refresh when that operation is completed.
+    /// </summary>
+    /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing any asynchronous operation.</returns>
+    protected override Task OnInitializedAsync()
+    {
+        InitializeCommands();
+        return base.OnInitializedAsync();
+    }
+
+    /// <summary>
+    /// Initialisieren der Commands
+    /// </summary>
+    private void InitializeCommands()
+    {
+        CmdSaveRating = new VmCommand("Bestätigen", async () =>
+        {
+            if (Rating.Data.Id < 1)
+            {
+                VmProjectBase.GetVmBaseStatic.Dc.DcExRatings.Add(Rating);
+            }
+
+            var counter = 0;
+            while (Rating.Data.MeasurementDefinitionAssignment.Id == 0 && counter < 10)
+            {
+                counter++;
+                VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinitionAssignments.WaitDataFromServerAsync(reload: true).ConfigureAwait(true);
+                Task.Delay(100);
+                Rating.Data.MeasurementDefinitionAssignment.Id = VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinitionAssignments.FirstOrDefault(mA => mA.Data.MeasurementDefinition.Id == Rating.Data.MeasurementDefinitionAssignment.MeasurementDefinition.Id).Id; //Workaround Id is always 0
+            }
+
+            var storeResult = await Rating.StoreData(true);
+
+            if (storeResult.DataOk)
+            {
+                DialogService.Close();
+            }
+            else
+            {
+                var answer = await VmBase.MsgBox.Show($"{storeResult.ServerExceptionText}<br>Trotzdem schließen?", "Error", VmMessageBoxButton.YesNo, VmMessageBoxImage.Error).ConfigureAwait(true);
+
+                if (answer is VmMessageBoxResult.Yes)
+                {
+                    DialogService.Close();
+                }
+            }
+        });
+    }
+
+}

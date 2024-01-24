@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewMain"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:controls="clr-namespace:BaseApp.View.Xamarin.Controls;assembly=BaseApp.View.Xamarin"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:map="clr-namespace:Biss.Apps.Map.XF.CustomControls;assembly=Biss.Apps.Map.XF"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:modalVm="clr-namespace:BaseApp.ViewModel.ModalVM;assembly=BaseApp"
+    xmlns:resources="clr-namespace:Exchange.Resources;assembly=Exchange"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    xmlns:viewmodels="clr-namespace:BaseApp.ViewModel;assembly=BaseApp"
+    d:DataContext="{x:Static viewmodels:VmMain.DesignInstance}"
+    x:TypeArguments="viewmodels:VmMain"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl x:Name="DetailPage" ShowDetailPage="{Binding View.DetailView.Show}">
+        <bcc:PageControl.DetailView>
+            <bcc:BxDetailView x:TypeArguments="modalVm:VmIotDeviceInfo" DetailViewModel="{Binding DetailViewViewModel, Source={x:Reference DetailPage}}">
+                <Grid x:DataType="modalVm:VmIotDeviceInfo" RowDefinitions="Auto,*">
+                    <StackLayout Spacing="10">
+                        <Label Text="{Binding Information.Name}" />
+                        <Label Text="{Binding Information.Description}" />
+                    </StackLayout>
+                    <ScrollView Grid.Row="1">
+                        <controls:MeasurementsComponent CanSubscribe="{Binding CanSubscribe}" MeasurementDefinitions="{Binding Data.MeasurementDefinitions}" />
+                    </ScrollView>
+                </Grid>
+            </bcc:BxDetailView>
+        </bcc:PageControl.DetailView>
+        <!--#region View Content-->
+        <Grid RowDefinitions="Auto, *">
+            <map:BissMapXf Grid.Row="0" Grid.RowSpan="2" />
+            <Grid
+                Grid.Row="0"
+                Padding="10"
+                ColumnDefinitions="50,*,50"
+                HorizontalOptions="Center">
+                <Frame Grid.Column="1" BackgroundColor="DarkGray">
+                    <Grid ColumnDefinitions="4*, *">
+                        <Entry Placeholder="{x:Static resources:ResViewMain.SearchBoxPlaceholder}" Text="{Binding SensorSearch}" />
+                        <bcc:BxGlyphButton
+                            Grid.Column="1"
+                            Command="{Binding CmdOpenFilter}"
+                            Glyph="{Binding CmdOpenFilter.Glyph}"
+                            GlyphColor="White" />
+                    </Grid>
+                </Frame>
+            </Grid>
+        </Grid>
+        <!--<Grid>
+            <Label Text="View ist auskommentiert ohne Keys" />
+        </Grid>-->
+        <!--#endregion-->
+
+    </bcc:PageControl>
+</view:BissContentPage>

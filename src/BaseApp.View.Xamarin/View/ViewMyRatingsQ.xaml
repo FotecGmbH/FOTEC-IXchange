@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewMyRatingsQ"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:bcm="http://biss.schemas.com/markupextensions"
+    xmlns:connectivity="clr-namespace:BaseApp.Connectivity;assembly=BaseApp"
+    xmlns:controls="clr-namespace:BaseApp.View.Xamarin.Controls;assembly=BaseApp.View.Xamarin"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:modalVm="clr-namespace:BaseApp.ViewModel.ModalVM;assembly=BaseApp"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    xmlns:viewmodels="clr-namespace:BaseApp.ViewModel;assembly=BaseApp"
+    x:Name="ViewMyRatingsQRef"
+    d:DataContext="{x:Static viewmodels:VmMyRatings.DesignInstance}"
+    x:TypeArguments="viewmodels:VmMyRatings"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl x:Name="PageControl" ShowDetailPage="{Binding View.DetailView.Show}">
+        <bcc:PageControl.DetailView>
+            <bcc:BxDetailView x:TypeArguments="modalVm:VmEditRating" DetailViewModel="{Binding DetailViewViewModel, Source={x:Reference PageControl}}">
+                <Grid x:DataType="modalVm:VmEditRating" RowDefinitions="*,*">
+                    <StackLayout Spacing="5">
+                        <controls:IxChangeRating ReadOnly="False" StarValue="{Binding Rating.Data.Rating}" />
+                        <Editor Placeholder="Bewertung eingeben" Text="{Binding Rating.Data.Description}" />
+                        <bcc:BxButton BissCommand="{Binding CmdSaveRating}" />
+                    </StackLayout>
+                </Grid>
+            </bcc:BxDetailView>
+        </bcc:PageControl.DetailView>
+        <Grid
+            Margin="8"
+            RowDefinitions="Auto,*"
+            RowSpacing="10">
+            <Label
+                FontSize="{StaticResource FontSizeLarge}"
+                HorizontalTextAlignment="Center"
+                Text="{Binding PageTitle}" />
+            <Grid
+                Grid.Row="1"
+                RowDefinitions="Auto,*"
+                RowSpacing="10">
+                <Grid Padding="12" ColumnDefinitions="*,3*,3*,3*,3*,*">
+                    <Label Text="{bcm:Translate ResViewMyRatings.LblRating}" />
+                    <Label Grid.Column="1" Text="{bcm:Translate ResViewMyRatings.LblDescription}" />
+                    <Label Grid.Column="2" Text="{bcm:Translate ResViewMyRatings.LblTimeStamp}" />
+                    <Label Grid.Column="3" Text="{bcm:Translate ResViewMyRatings.LblSensor}" />
+                    <Label Grid.Column="4" Text="{bcm:Translate ResViewMyRatings.LblMeasurementValue}" />
+                </Grid>
+                <ListView
+                    Grid.Row="1"
+                    ItemsSource="{Binding Dc.DcExRatings}"
+                    SelectedItem="{Binding Dc.DcExRatings.SelectedItem}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="connectivity:DcListTypeRating">
+                            <ViewCell>
+                                <Grid ColumnDefinitions="*,3*,3*,3*,3*,*">
+                                    <Label Text="{Binding Data.Rating, StringFormat='{0} / 5'}" />
+                                    <Label Grid.Column="1" Text="{Binding Data.Description}" />
+                                    <Label Grid.Column="2" Text="{Binding Data.TimeStamp}" />
+                                    <Label Grid.Column="3" Text="{Binding Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information.Name}" />
+                                    <Label Grid.Column="4" Text="{Binding Data.MeasurementDefinitionAssignment.Type, Converter={StaticResource ConverterEnumDisplayName}}" />
+                                    <StackLayout
+                                        Grid.Column="5"
+                                        Orientation="Horizontal"
+                                        Spacing="5">
+                                        <bcc:BxGlyphButton
+                                            Command="{Binding ViewModel.Dc.DcExRatings.CmdEditItem, Source={x:Reference ViewMyRatingsQRef}}"
+                                            CommandParameter="{Binding}"
+                                            Glyph="{Binding ViewModel.Dc.DcExRatings.CmdEditItem.Glyph, Source={x:Reference ViewMyRatingsQRef}}"
+                                            GlyphColor="Black" />
+                                        <bcc:BxGlyphButton
+                                            Command="{Binding ViewModel.Dc.DcExRatings.CmdRemoveItem, Source={x:Reference ViewMyRatingsQRef}}"
+                                            CommandParameter="{Binding}"
+                                            Glyph="{Binding ViewModel.Dc.DcExRatings.CmdRemoveItem.Glyph, Source={x:Reference ViewMyRatingsQRef}}"
+                                            GlyphColor="Black" />
+                                    </StackLayout>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+        </Grid>
+        <!--<StackLayout
+            Margin="10,0">
+
+            <bcc:BxCollectionView Collection="{Binding Dc.DcExRatings}"
+                                  SelectedItem="{Binding Dc.DcExRatings.SelectedItem}">
+                <bcc:BxCollectionView.DataTemplate>
+                    <DataTemplate>
+        -->
+        <!--<ViewCell>-->
+        <!--
+                            <Grid x:DataType="connectivity:DcListTypeRating"
+                                  Padding="15,10"
+                                  HorizontalOptions="FillAndExpand"
+                                  ColumnSpacing="20"
+                                  RowSpacing="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Grid.Column="0"
+                                    VerticalOptions="CenterAndExpand"
+                                    VerticalTextAlignment="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Data.Rating}"/>
+                                            <Span Text=" / "/>
+                                            <Span Text="5"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Grid
+                                    Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Text="{Binding Data.Description}"
+                                        VerticalOptions="CenterAndExpand"
+                                        VerticalTextAlignment="Center" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Text="{Binding Data.TimeStamp, StringFormat='{0:dd.MM.yyyy}'}"
+                                        VerticalOptions="CenterAndExpand"
+                                        VerticalTextAlignment="Center"
+                                        FontSize="Micro"
+                                        FontAttributes="Italic" />
+                                </Grid>
+                                <Grid
+                                    Grid.Column="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Label
+                                        Grid.Row="0"
+                                        Text="{Binding Data.MeasurementDefinition.Information.Name}"
+                                        VerticalOptions="CenterAndExpand"
+                                        VerticalTextAlignment="Center"/>
+                                    <Label
+                                        Grid.Row="1"
+                                        Text="{Binding Data.MeasurementDefinition.Type, Converter={StaticResource ConverterEnumDisplayName}}"
+                                        VerticalOptions="CenterAndExpand"
+                                        VerticalTextAlignment="Center"/>
+                                </Grid>
+        -->
+        <!--<BoxView Grid.Row="1"
+                                         Grid.ColumnSpan="4"
+                                         HeightRequest="1"
+                                         BackgroundColor="{StaticResource ColorSeperator}"/>-->
+        <!--
+                            </Grid>
+        -->
+        <!--</ViewCell>-->
+        <!--
+                    </DataTemplate>
+                </bcc:BxCollectionView.DataTemplate>
+        -->
+        <!--<bcc:BxCollectionView.WpfTemplateSwipe>
+                    <x:DataTemplate>
+                        <StackLayout Orientation="Horizontal"
+                                     Spacing="5"
+                                     Grid.Column="3"
+                                     VerticalOptions="CenterAndExpand">
+                            <bcc:BxGlyphButton Command="{Binding ViewModel.Dc.DcExRatings.CmdEditItem, Source={x:Reference ViewMyRatingsQRef}}"
+                                               CommandParameter="{Binding}"
+                                               BackgroundColor="{StaticResource ColorButtonBackground}"
+                                               Glyph="{Binding ViewModel.Dc.DcExRatings.CmdEditItem.Glyph, Source={x:Reference ViewMyRatingsQRef}}"/>
+                            <bcc:BxGlyphButton Command="{Binding ViewModel.Dc.DcExRatings.CmdRemoveItem, Source={x:Reference ViewMyRatingsQRef}}"
+                                               CommandParameter="{Binding}"
+                                               BackgroundColor="{StaticResource ColorButtonRemove}"
+                                               Glyph="{Binding ViewModel.Dc.DcExRatings.CmdRemoveItem.Glyph, Source={x:Reference ViewMyRatingsQRef}}"/>
+                        </StackLayout>
+                    </x:DataTemplate>
+                </bcc:BxCollectionView.WpfTemplateSwipe>-->
+        <!--
+            </bcc:BxCollectionView>
+
+        </StackLayout>-->
+    </bcc:PageControl>
+</view:BissContentPage>

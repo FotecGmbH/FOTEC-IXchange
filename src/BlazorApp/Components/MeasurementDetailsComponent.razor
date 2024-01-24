@@ -1,0 +1,372 @@
+﻿@using Exchange.Extensions
+@using BDA.Common.Exchange.Model.ConfigApp
+@using Biss.Apps
+@using Exchange.Enum
+@using Exchange.Model.ConfigApp
+@using System.Collections.ObjectModel
+@using BaseApp.Connectivity
+@using BaseApp.Helper
+@using BDA.Common.Exchange.Enum
+@{
+    var selectedName = $"isSelected_{MeasurementDefinition.Information.Name}";
+    var reviewName = $"review_{MeasurementDefinition.Information.Name}";
+}
+<RadzenStack>
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenStack Orientation="Orientation.Horizontal" Gap="3px">
+
+            <RadzenCheckBox @bind-Value="MeasurementDefinition.IsSelected" @onclick="AboChanged" Name="@selectedName" ReadOnly="@(!IsSelectable)"/>
+
+            <RadzenLabel Component="@selectedName" Text="@MeasurementDefinition.Information?.Name"/>
+        </RadzenStack>
+        @* <RadzenText Text="@MeasurementDefinition.CostsAsString" /> *@
+    </RadzenStack>
+    <RadzenText Text="@ExMesDefAssignHelper.GetAssignment(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).Data.CostsAsString"/>
+    <RadzenLabel Text="@ExMesDefAssignHelper.GetAssignment(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).Data.TypeAsString"/>
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenText Text="@($"{ResCommon.TxtLastValue}: {MeasurementDefinition.Information?.UpdatedDate:g}")"/>
+        <RadzenStack Orientation="Orientation.Horizontal">
+            @if (IsEditable)
+            {
+                <BxButton BissCommand="EditCommand"
+                          BxButtonType="EnumBxButtonType.JustGlyph"
+                          ButtonStyle="ButtonStyle.Primary"/>
+
+                <BxButton BissCommand="DeleteCommand"
+                          BxButtonType="EnumBxButtonType.JustGlyph"
+                          ButtonStyle="ButtonStyle.Danger"/>
+            }
+            @* <RadzenIcon IconStyle="IconStyle.Info" Icon="info"/> *@
+        </RadzenStack>
+    </RadzenStack>
+    <RadzenStack Orientation="Orientation.Horizontal" Gap="3px">
+        <StopClickPropagation>
+            <RadzenLabel Component="@reviewName" Text="@ResViewMyRatings.LblRatings" class="linkStyle" @onclick="() => ProjectRazorPage<VmMenu>.OpenRatingsModal(MeasurementDefinition, DialogService)"/>
+        </StopClickPropagation>
+        <IXChangeRating Value="@ExMesDefAssignHelper.GetAssignment(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).Data.TotalRatingInt" ReadOnly="true" Name="@reviewName"/>
+    </RadzenStack>
+    @if ((IsEditable || MeasurementDefinition.IsSelected))
+    {
+        <RadzenAccordion Expand="GetMeasurements">
+            <Items>
+                <RadzenAccordionItem Text="@($"{ResCommon.TxtMore}...")">
+                    <RadzenStack Gap="3px">
+                        <RadzenSelectBar TValue="EnumTimePeriod"
+                                         TextProperty="Text"
+                                         ValueProperty="Value"
+                                         Data="@(Enum.GetValues<EnumTimePeriod>().Select(t => new {Text = $"{t}", Value = t}))"
+                                         Size="ButtonSize.Small"
+                                         Value="SelectedPeriod"
+                                         ValueChanged="SelectedPeriodChanged"/>
+                        @if (Measurements.Any())
+                        {
+                            @if (MeasurementDefinition.ValueType is EnumValueTypes.Number)
+                            {
+                                <RadzenChart>
+                                    <RadzenLineSeries Title="Historische Daten"
+                                                      Data="Measurements"
+                                                      ValueProperty="@nameof(ExMeasurementWithDoubleValue.ValueAsNumber /*.Value*/ /*.ValueAsNumber*/)"
+                                                      CategoryProperty="@(nameof(ExMeasurementWithDoubleValue.TimeStamp))"/>
+                                    <RadzenValueAxis FormatString="{0:N2}" Min="@HistoricValuesMin" Max="@HistoricValuesMax"/>@* Step="@HistoricValuesStep" *@
+                                    <RadzenLegend Visible="false"/>
+                                </RadzenChart>
+                            }
+                            else
+                            {
+                                <RadzenDataGrid TItem="ExMeasurementWithDoubleValue"
+                                                Data="Measurements"
+                                                AllowPaging="true"
+                                                PageSize="5"
+                                                AllowColumnReorder="true"
+                                                AllowFiltering="true"
+                                                AllowSorting="true"
+                                                AllowColumnResize="true">
+                                    <Columns>
+                                        <RadzenDataGridColumn Title="Datum" TItem="ExMeasurement" Property="@nameof(ExMeasurementWithDoubleValue.TimeStamp)" FormatString="{0:dd.MM.yyyy}" Width="120px"/>
+                                        <RadzenDataGridColumn CssClass="truncated" Title="Wert" TItem="ExMeasurementWithDoubleValue" Property="@nameof(ExMeasurementWithDoubleValue.Value)"/>
+                                    </Columns>
+                                </RadzenDataGrid>
+                            }
+                        }
+                        else
+                        {
+                            <RadzenText Text="@NoValuesText"/>
+                        }
+                    </RadzenStack>
+                </RadzenAccordionItem>
+            </Items>
+        </RadzenAccordion>
+    }
+</RadzenStack>
+
+<style>
+    .truncated {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+@code {
+
+    /// <summary>
+    /// Cmd für Editieren
+    /// </summary>
+    private VmCommand EditCommand { get; set; }
+
+    /// <summary>
+    /// Cmd für Löschen
+    /// </summary>
+    private VmCommand DeleteCommand { get; set; }
+
+    /// <summary>
+    /// Dialogservice um Modal (Rezensionen) zu öffnen
+    /// </summary>
+    [Inject]
+    public DialogService DialogService { get; set; }
+
+    /// <summary>
+    /// Messwert
+    /// </summary>
+    [Parameter]
+    [EditorRequired]
+    public ExMeasurementDefinition MeasurementDefinition { get; set; }
+
+    /// <summary>
+    /// Auswählbar
+    /// </summary>
+    [Parameter]
+    public bool IsSelectable { get; set; }
+
+    /// <summary>
+    /// Kann editiert werden
+    /// </summary>
+    [Parameter]
+    public bool IsEditable { get; set; }
+
+    /// <summary>
+    /// Ausgewählte Zeitperiode für Messwerte
+    /// </summary>
+    private EnumTimePeriod SelectedPeriod { get; set; } = EnumTimePeriod.Day;
+
+    /// <summary>
+    /// Messwerte
+    /// </summary>
+    private ObservableCollection<ExMeasurementWithDoubleValue> Measurements { get; set; } = new();
+
+    /// <summary>
+    /// Minimum für historische Werte Anzeige
+    /// </summary>
+    private double HistoricValuesMin => 0;
+
+    /// <summary>
+    /// Maximum für historische Werte Anzeige
+    /// </summary>
+    private double HistoricValuesMax => MeasurementDefinition.ValueType == EnumValueTypes.Number
+        ? Measurements?.Any() ?? false
+            ? (Measurements.Max(x => /*double.TryParse(x.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var num) ? num : 0*/ x.ValueAsNumber))
+            : 1
+        : 1;
+
+    /// <summary>
+    /// Step für historische Werte Anzeige
+    /// </summary>
+    private double HistoricValuesStep => Math.Ceiling((HistoricValuesMax - HistoricValuesMin) / 100.0) * 100 / 5;
+
+    /// <summary>
+    /// Text wenn keine Werte vorhanden oder Error bei Abruf
+    /// </summary>
+    public string NoValuesText { get; set; }
+
+
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its
+    /// initial parameters from its parent in the render tree.
+    /// Override this method if you will perform an asynchronous operation and
+    /// want the component to refresh when that operation is completed.
+    /// </summary>
+    /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing any asynchronous operation.</returns>
+    protected override async Task OnInitializedAsync()
+    {
+        await VmProjectBase.GetVmBaseStatic.Dc.DcExAbos.WaitDataFromServerAsync(reload: true).ConfigureAwait(true);
+        await VmProjectBase.GetVmBaseStatic.Dc.DcExIncomeOutput.Sync().ConfigureAwait(true);
+        var counter = 0;
+        while (MeasurementDefinition == null && counter++ < 10)
+            await Task.Delay(100).ConfigureAwait(false);
+
+        try
+        {
+            VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinition.ReadData(VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinition.FirstOrDefault(m => m.Id == MeasurementDefinition.Id), false); //.WaitDataFromServerAsync(reload: true).ConfigureAwait(true); // workaround notificationOnNewRating isnt working without this
+        }
+        catch (Exception e)
+        {
+            var tdt = 0;
+        }
+
+
+        MeasurementDefinition.IsSelected = VmProjectBase.GetVmBaseStatic.Dc.DcExAbos.Any(x => x.Data.User.Id == VmProjectBase.GetVmBaseStatic.Dc.DcExUser.Data.Id && x.Data.MeasurementDefinitionAssignment.Id == ExMesDefAssignHelper.GetAssignment(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).Index /*.Data.Id*/);
+
+        InitializeCommands();
+        await base.OnInitializedAsync();
+    }
+
+    /// <summary>
+    /// Initialisieren der Commands
+    /// </summary>
+    protected void InitializeCommands()
+    {
+        EditCommand = new VmCommand(VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinition.CmdEditItem.DisplayName, async () =>
+        {
+            var listPoint = GetListPoint();
+
+            if (listPoint is null)
+                return;
+
+            //VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinition.CmdEditItem.Execute(listPoint);
+            var r = await VmProjectBase.GetVmBaseStatic.Nav.ToViewWithResult(typeof(VmEditMeasurementDefinition), listPoint);
+        }, glyph: VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinition.CmdEditItem.Glyph);
+
+        DeleteCommand = new VmCommand(VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinition.CmdRemoveItem.DisplayName, async () =>
+        {
+            var listPoint = GetListPoint();
+
+            if (listPoint is null)
+                return;
+
+            VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinition.CmdRemoveItem.Execute(listPoint);
+        }, glyph: VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinition.CmdRemoveItem.Glyph);
+    }
+
+    /// <summary>
+    /// Datenpunkt erhalten
+    /// </summary>
+    /// <returns></returns>
+    private DcListTypeMeasurementDefinition? GetListPoint()
+    {
+        return VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinition.FirstOrDefault(x => x.Id == MeasurementDefinition.Id);
+    }
+
+    /// <summary>
+    /// Falls sich das Abo geaendert hat
+    /// </summary>
+    private void AboChanged()
+    {
+        var mesDef = VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinition.FirstOrDefault(x => x.Data.Id == MeasurementDefinition.Id);
+
+        if (mesDef != null)
+            VmProjectBase.GetVmBaseStatic.Dc.DcExMeasurementDefinition.StoreAll();
+
+
+        if (MeasurementDefinition.IsSelected)
+        {
+            var currAbo = VmProjectBase.GetVmBaseStatic.Dc.DcExAbos.FirstOrDefault(x => x.Data.User.Id == VmProjectBase.GetVmBaseStatic.Dc.DcExUser.Data.Id && x.Data.MeasurementDefinitionAssignment.Id == ExMesDefAssignHelper.GetAssignment(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).Data.MeasurementDefinition.Id);
+
+            var currFiltered = VmProjectBase.GetVmBaseStatic.Dc.DcExIncomeOutput
+                .Where(x => x.Data.MeasurementDefinitionId == MeasurementDefinition.Id && x.Data.Option == EnumIncomeOutputOption.Abo).ToList();
+
+            if (!currFiltered.Any(c => DateTime.UtcNow - c.Data.TimeStamp < TimeSpan.FromDays(1)))
+            {
+                VmProjectBase.GetVmBaseStatic.Dc.DcExIncomeOutput.Add(new DcListTypeIncomeOutput(
+                    new ExIncomeOutput
+                    {
+                        UserId = VmProjectBase.GetVmBaseStatic.Dc.DcExUser.Data.Id,
+                        Ixies = -(int) ExMesDefAssignHelper.GetAssignment(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).Data.Costs, // eigener User Ausgabe
+                        MeasurementDefinitionId = MeasurementDefinition.Id,
+                        Option = EnumIncomeOutputOption.Abo
+                    }));
+                VmProjectBase.GetVmBaseStatic.Dc.DcExIncomeOutput.StoreAll();
+            }
+
+            Task.Run(async () =>
+            {
+                var newAbo = new ExAbo {MeasurementDefinitionAssignment = (await ExMesDefAssignHelper.GetAssignmentAsync(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).ConfigureAwait(true)).Data, User = VmProjectBase.GetVmBaseStatic.Dc.DcExUser.Data};
+                VmProjectBase.GetVmBaseStatic.Dc.DcExAbos.Add(new DcListTypeAbo(newAbo));
+                VmProjectBase.GetVmBaseStatic.Dc.DcExAbos.StoreAll();
+            });
+        }
+        else
+        {
+            var curAbo = VmProjectBase.GetVmBaseStatic.Dc.DcExAbos.FirstOrDefault(x => x.Data.User.Id == VmProjectBase.GetVmBaseStatic.Dc.DcExUser.Data.Id && x.Data.MeasurementDefinitionAssignment.Id == ExMesDefAssignHelper.GetAssignment(MeasurementDefinition, VmProjectBase.GetVmBaseStatic.Dc).Data.Id);
+
+            if (curAbo != null)
+            {
+                VmProjectBase.GetVmBaseStatic.Dc.DcExAbos.Remove(curAbo);
+                VmProjectBase.GetVmBaseStatic.Dc.DcExAbos.StoreAll();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Der selektierte Zeitraum hat sich geaendert
+    /// </summary>
+    /// <param name="period">Zeitraum</param>
+    /// <returns>Task</returns>
+    private async Task SelectedPeriodChanged(EnumTimePeriod period)
+    {
+        SelectedPeriod = period;
+
+        await GetMeasurements().ConfigureAwait(true);
+    }
+
+    /// <summary>
+    /// Messwerte erhalten
+    /// </summary>
+    /// <returns>Task</returns>
+    private async Task GetMeasurements()
+    {
+        DateTime fromDate;
+        DateTime toDate;
+
+        switch (SelectedPeriod)
+        {
+            case EnumTimePeriod.Day:
+                fromDate = DateTime.Today;
+                break;
+            case EnumTimePeriod.Week:
+                fromDate = DateTime.Today.AddDays(-7);
+                break;
+            case EnumTimePeriod.Month:
+                fromDate = DateTime.Today.AddMonths(-1);
+                break;
+            case EnumTimePeriod.Year:
+                fromDate = DateTime.Today.AddYears(-1);
+                break;
+            case EnumTimePeriod.All:
+                fromDate = DateTime.MinValue;
+                break;
+            default:
+                return;
+        }
+
+        //Enddatum immer heute 23:59:59
+        toDate = DateTime.Today.AddDays(1).AddSeconds(-1);
+
+        var newMeasurementsResult = await VmProjectBase.GetVmBaseStatic.Sa.GetMeasurementsInPeriod(MeasurementDefinition.Id, fromDate, toDate).ConfigureAwait(true);
+
+        Measurements.Clear();
+
+        if (newMeasurementsResult.Ok)
+        {
+            foreach (var exMeasurement in newMeasurementsResult.Result)
+            {
+                Measurements.Add(new ExMeasurementWithDoubleValue
+                                 {
+                                     Id = exMeasurement.Id,
+                                     Location = exMeasurement.Location,
+                                     SourceInfo = exMeasurement.SourceInfo,
+                                     TimeStamp = exMeasurement.TimeStamp,
+                                     Value = exMeasurement.Value,
+                                     ValueCounter = exMeasurement.ValueCounter
+                                 });
+            }
+
+            NoValuesText = Measurements.Any() ? string.Empty : "Keine Werte vorhanden.";
+        }
+        else
+        {
+            NoValuesText = newMeasurementsResult.Status.GetDisplayName();
+            await VmBase.MsgBox.Show(NoValuesText, "Fehler bei Abfrage der Messwerte", icon: VmMessageBoxImage.Error).ConfigureAwait(true);
+        }
+    }
+
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewEditMapPosition"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:map="clr-namespace:Biss.Apps.Map.XF.CustomControls;assembly=Biss.Apps.Map.XF"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    xmlns:viewmodels="clr-namespace:BaseApp.ViewModel;assembly=BaseApp"
+    d:DataContext="{x:Static viewmodels:VmEditMapPosition.DesignInstance}"
+    x:TypeArguments="viewmodels:VmEditMapPosition"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl>
+
+        <!--#region View Content-->
+        <Grid RowDefinitions="*,50">
+            <map:BissMapXf />
+            <Grid
+                Grid.Row="1"
+                Padding="5"
+                ColumnDefinitions="*,*"
+                ColumnSpacing="5">
+                <bcc:BxButton BissCommand="{Binding CmdOk}" />
+                <bcc:BxButton Grid.Column="1" BissCommand="{Binding CmdAbort}" />
+            </Grid>
+        </Grid>
+
+
+        <!--#endregion-->
+
+    </bcc:PageControl>
+</view:BissContentPage>

@@ -1,0 +1,85 @@
+@page "/ViewInfo"
+@page "/ViewInfo/{Id:int}"
+
+@using BlazorApp.Components
+@using System.IO
+@inherits ProjectRazorPage<VmInfo>
+
+@if (ViewModel != null!)
+{
+    <RadzenStack Gap="20px">
+        <PageHeader Text="@ViewModel.PageTitle"/>
+
+        @if (ViewModel.Dc.DeviceAndUserRegisteredLocal)
+        {
+            <RadzenText TextStyle="TextStyle.Body1" Style="margin-top: 20px"
+                        Text="@ResViewInfo.Information"/>
+            <RadzenCard>
+                <RadzenStack Orientation="Orientation.Vertical" Gap="15px">
+
+
+                    @if (ViewModel.Dc.DeviceAndUserRegisteredLocal)
+                    {
+                        <RadzenButton Click="@(async x => await DownloadGatewayApp().ConfigureAwait(true))">@ResViewInfo.CmdDownloadGateway </RadzenButton>
+                    }
+                    @if (ViewModel.Dc.DeviceAndUserRegisteredLocal)
+                    {
+                        <RadzenButton Click="@DownloadGatewayConfig">@ResViewInfo.CmdDownloadGatewayConfig </RadzenButton>
+                    }
+                    @if (ViewModel.Dc.DeviceAndUserRegisteredLocal)
+                    {
+                        <RadzenButton Click="@(async x => await DownloadTcpApp().ConfigureAwait(true))">@ResViewInfo.CmdDownloadTcpApplication </RadzenButton>
+                    }
+
+                </RadzenStack>
+            </RadzenCard>
+        }
+        else
+        {
+            <RadzenText TextStyle="TextStyle.Body1" Style="margin-top: 20px"
+                        Text="@ResViewInfo.NotLoggedInText"/>
+        }
+
+    </RadzenStack>
+}
+
+
+@code
+{
+    /// <summary>
+    /// baut gateway config zusammen von dc gateway und ladet diese
+    /// also json file herunter
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task DownloadGatewayConfig()
+    {
+        var gwConfigByteArray = ViewModel.GenerateData();
+
+        var fileStream = new MemoryStream(gwConfigByteArray);
+
+        using var streamRef = new DotNetStreamReference(fileStream);
+
+        await JsRuntime.InvokeVoidAsync("downloadFileFromStream", "gwConfig.json", streamRef).ConfigureAwait(true);
+    }
+
+    /// <summary>
+    /// ladet gateway app von link herunter
+    /// </summary>
+    /// <returns>task</returns>
+    public async Task DownloadGatewayApp()
+    {
+        //beabsichtigt kein await, weil sonst blockiert
+        JsRuntime.InvokeVoidAsync("triggerFileDownload", "GatewayAppWindows.zip", @"https://ixchangeblobdev.blob.core.windows.net/ixchangeblob/GatewayAppWindows.zip");
+    }
+
+    /// <summary>
+    /// ladet tcp app von link herunter
+    /// </summary>
+    /// <returns>task</returns>
+    public async Task DownloadTcpApp()
+    {
+        //beabsichtigt kein await, weil sonst blockiert
+        JsRuntime.InvokeVoidAsync("triggerFileDownload", "TcpSensorApplication.zip", @"https://ixchangeblobdev.blob.core.windows.net/ixchangeblob/TcpSensorApplication.zip");
+    }
+}

@@ -1,0 +1,339 @@
+﻿@page "/ViewEditMeasurementDefinition"
+@page "/ViewEditMeasurementDefinition/{Id:int}"
+
+@using BlazorApp.Components
+@inherits ProjectRazorPage<VmEditMeasurementDefinition>
+
+@if (ViewModel != null!)
+{
+    <RadzenStack>
+        <PageHeader Text="@ViewModel.PageTitle"/>
+
+        <RadzenCard>
+            <RadzenStack>
+                @foreach (var entry in dictionary.Take(6))
+                {
+                    <RadzenRow>
+                        <RadzenColumn Size="6" SizeMD="3">
+                            <RadzenLabel class="labelstyeditdescription" Text="@entry.Key"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="6" SizeMD="9">
+                            @entry.Value
+                        </RadzenColumn>
+                    </RadzenRow>
+                }
+
+
+            </RadzenStack>
+        </RadzenCard>
+
+        @if (ViewModel.ShowVirtualFloat)
+        {
+            <RadzenCard>
+                <RadzenStack>
+                    <RadzenLabel class="labelstyeditheader" Text="@ResViewEditMeasurementDefinition.LblRandomNumber"/>
+                    @if (ViewModel.IotDevice.Data.IsIotDotnetSensor)
+                    {
+                        @if (ViewModel.EntryVirtFloatMin != null!)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryVirtFloatMin.Title"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxEntry ShowFrame="false" Entry="@ViewModel.EntryVirtFloatMin"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+
+                        @if (ViewModel.EntryVirtFloatMax != null!)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryVirtFloatMax.Title"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxEntry ShowFrame="false" Entry="@ViewModel.EntryVirtFloatMax"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+
+                        @if (ViewModel.EntryVirtPosLat != null!)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryVirtPosLat.Title"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxEntry ShowFrame="false" Entry="@ViewModel.EntryVirtPosLat"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+
+                        @if (ViewModel.EntryVirtPosLon != null!)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryVirtPosLon.Title"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxEntry ShowFrame="false" Entry="@ViewModel.EntryVirtPosLon"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+
+                        @if (ViewModel.EntryVirtPosRadius != null!)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryVirtPosRadius.Title"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxEntry ShowFrame="false" Entry="@ViewModel.EntryVirtPosRadius"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+                    }
+
+
+                </RadzenStack>
+            </RadzenCard>
+        }
+
+        @if (ViewModel.IotDevice.Data.IsIotDotnetSensor)
+        {
+            <RadzenRow>
+                <RadzenColumn Size="6" SizeMD="3">
+                    <RadzenLabel class="labelstyeditdescription" Text="Messintervall von Iot-Device:"/>
+                </RadzenColumn>
+                <RadzenColumn Size="6" SizeMD="9">
+                    <RadzenSwitch @bind-Value="ViewModel.IotMeasurementInterval"/>
+                </RadzenColumn>
+            </RadzenRow>
+
+            @if (ViewModel.EntryMeasurmentInterval != null!)
+            {
+                <RadzenRow>
+                    <RadzenColumn Size="6" SizeMD="3">
+                        <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryMeasurmentInterval.Title"/>
+                    </RadzenColumn>
+                    <RadzenColumn Size="6" SizeMD="9">
+                        <BxEntry ShowFrame="false" Entry="@ViewModel.EntryMeasurmentInterval"/>
+                    </RadzenColumn>
+                </RadzenRow>
+            }
+        }
+
+        @if (ViewModel.ShowCustomOpCode)
+        {
+            <RadzenCard>
+                <RadzenStack>
+                    <RadzenLabel class="labelstyeditheader">Eigener OP - Code für State-Machine</RadzenLabel>
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+                        @if (ViewModel.EntryCustomOpCode != null!)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn Size="6" SizeMD="3">
+                                    <RadzenLabel class="labelstyeditdescription" Text="@ViewModel.EntryCustomOpCode.Title"/>
+                                </RadzenColumn>
+                                <RadzenColumn Size="6" SizeMD="9">
+                                    <BxEntry ShowFrame="false" Entry="@ViewModel.EntryCustomOpCode"/>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+                    </RadzenStack>
+                </RadzenStack>
+            </RadzenCard>
+        }
+
+
+        <RadzenCard>
+            <RadzenLabel class="labelstyeditheader">Benachrichtigungen: </RadzenLabel>
+            <RadzenStack>
+                @foreach (var entry in dictionary.Skip(6))
+                {
+                    <RadzenRow>
+                        <RadzenColumn Size="6" SizeMD="3">
+                            <RadzenLabel class="labelstyeditdescription" Text="@entry.Key"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="6" SizeMD="9">
+                            @entry.Value
+                        </RadzenColumn>
+                    </RadzenRow>
+                }
+
+
+            </RadzenStack>
+        </RadzenCard>
+
+        <RadzenLabel class="labelstyeditheader">Rückgabewert des Messwerts</RadzenLabel>
+
+        <RadzenRow>
+            <RadzenColumn Size="6" SizeMD="3">
+                <RadzenLabel class="labelstyeditdescription">Typ:</RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn Size="6" SizeMD="9">
+                @if (ViewModel.CanValuePickerChanged)
+                {
+                    <BxPicker PickerInstance="@ViewModel.PickerValueType" @bind-SelectedItem="@ViewModel.PickerValueType.SelectedItem"></BxPicker>
+                }
+                else
+                {
+                    @if (ViewModel.PickerValueType.SelectedItem != null!)
+                    {
+                        <RadzenLabel class="labelstyeditdescription">@ViewModel.PickerValueType.SelectedItem.Description</RadzenLabel>
+                    }
+                }
+            </RadzenColumn>
+        </RadzenRow>
+
+        @if (ViewModel.ShowEditPickerRawValueTypes)
+        {
+            <RadzenRow>
+                <RadzenColumn Size="6" SizeMD="3">
+                    <RadzenLabel class="labelstyeditdescription">Datentyp Sensor:</RadzenLabel>
+                </RadzenColumn>
+                <RadzenColumn Size="6" SizeMD="9">
+                    @if (ViewModel.CanEditPickerRawValueTypes)
+                    {
+                        <BxPicker PickerInstance="@ViewModel.PickerRawValueTypes" @bind-SelectedItem="@ViewModel.PickerRawValueTypes.SelectedItem"></BxPicker>
+                    }
+                    else
+                    {
+                        @if (ViewModel.PickerRawValueTypes.SelectedItem != null!)
+                        {
+                            <RadzenLabel class="labelstyeditdescription">@ViewModel.PickerRawValueTypes.SelectedItem.Description</RadzenLabel>
+                        }
+                    }
+                </RadzenColumn>
+            </RadzenRow>
+        }
+
+        @if (ViewModel.ShowCanEditRawValueByteCount)
+        {
+            <RadzenRow>
+                <RadzenColumn Size="6" SizeMD="3">
+                    <RadzenLabel class="labelstyeditdescription">Byte Anzahl:</RadzenLabel>
+                </RadzenColumn>
+                <RadzenColumn Size="6" SizeMD="9">
+                    @if (ViewModel.CanEditPickerRawValueTypes)
+                    {
+                        <BxEntry Entry="ViewModel.EntryRawValueByteCount" ShowFrame="false"></BxEntry>
+                    }
+                    else
+                    {
+                        <RadzenLabel class="labelstyeditdescription">@ViewModel.ConfigBase.Base.RawValueDefinition.ByteCount</RadzenLabel>
+                    }
+                </RadzenColumn>
+            </RadzenRow>
+        }
+
+        <RadzenRow>
+            <RadzenColumn Size="6" SizeMD="3">
+                <RadzenLabel class="labelstyeditdescription" Text="Advanced Mode"/>
+            </RadzenColumn>
+            <RadzenColumn Size="6" SizeMD="9">
+                <RadzenSwitch @bind-Value="ViewModel.AdvancedMode"/>
+            </RadzenColumn>
+        </RadzenRow>
+
+
+        @if (ViewModel.AdvancedMode)
+        {
+            <RadzenLabel class="labelstyeditheader" Text="@ResViewEditMeasurementDefinition.LblAdditionalDynamicData"/>
+
+            foreach (var entry in dictionaryAdvancedMode)
+            {
+                <RadzenRow>
+                    <RadzenColumn Size="6" SizeMD="3">
+                        <RadzenLabel class="labelstyeditdescription" Text="@entry.Key"/>
+                    </RadzenColumn>
+                    <RadzenColumn Size="6" SizeMD="9">
+                        @entry.Value
+                    </RadzenColumn>
+                </RadzenRow>
+            }
+        }
+
+    </RadzenStack>
+}
+
+@code
+{
+    private RenderFragment NameRenderFragment =>
+        @<BxEntry ShowFrame="false" Entry="@ViewModel.EntryName"/>;
+
+    private RenderFragment DescriptionRenderFragment =>
+        @<BxEntry ShowFrame="false" Entry="@ViewModel.EntryDescription"/>;
+
+    private RenderFragment TypeRenderFragment =>
+        @<BxPicker PickerInstance="@ViewModel.PickerMeasurementType" @bind-SelectedItem="@ViewModel.PickerMeasurementType.SelectedItem"/>;
+
+    private RenderFragment MessagesRenderFragment =>
+        @<RadzenSwitch @bind-Value="ViewModel.MeasurementDefinitionAssignment.SendNotifications"/>;
+
+    private RenderFragment ExceedRenderFragment => __builder =>
+    {
+        if (ViewModel?.DcListTypeOwnAbo is not null)
+        {
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <RadzenSwitch @bind-Value="ViewModel.DcListTypeOwnAbo.Data.ExceedNotify"/>
+                <BxEntry Entry="ViewModel.EntryExceedNotifyValue" ShowFrame="false"/>
+            </RadzenStack>
+        }
+    };
+
+    private RenderFragment UndercutRenderFragment => __builder =>
+    {
+        if (ViewModel?.DcListTypeOwnAbo is not null)
+        {
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <RadzenSwitch @bind-Value="ViewModel.DcListTypeOwnAbo.Data.UndercutNotify"/>
+                <BxEntry Entry="ViewModel.EntryUndercutNotifyValue" ShowFrame="false"/>
+            </RadzenStack>
+        }
+    };
+
+    private RenderFragment FailureMinutesRenderFragment => __builder =>
+    {
+        if (ViewModel?.DcListTypeOwnAbo is not null)
+        {
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <RadzenSwitch @bind-Value="ViewModel.DcListTypeOwnAbo.Data.FailureForMinutesNotify"/>
+                <BxEntry Entry="ViewModel.EntryFailureForMinutesNotifyValue" ShowFrame="false"/>
+            </RadzenStack>
+        }
+    };
+
+    private RenderFragment MovingAverageRenderFragment => __builder =>
+    {
+        if (ViewModel?.DcListTypeOwnAbo is not null)
+        {
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <RadzenSwitch @bind-Value="ViewModel.DcListTypeOwnAbo.Data.MovingAverageNotify"/>
+                <BxEntry Entry="ViewModel.EntryMovingAverageNotifyValue" ShowFrame="false"/>
+            </RadzenStack>
+        }
+    };
+
+    private RenderFragment MeasurementRatedSubscriptionRenderFragment =>
+        @<RadzenSwitch @bind-Value="ViewModel.MeasurementDefinitionAssignment.NotificationOnNewRating"/>;
+
+    private RenderFragment MeasurementSubscribedNotificationRenderFragment =>
+        @<RadzenSwitch @bind-Value="ViewModel.MeasurementDefinitionAssignment.NotificationOnSubscription"/>;
+
+    private RenderFragment MeasurementUnsubscribedNotificationRenderFragment =>
+        @<RadzenSwitch @bind-Value="ViewModel.MeasurementDefinitionAssignment.NotificationOnUnsubscription"/>;
+
+    private RenderFragment DownStreamTypeRenderFragment =>
+        @<BxPicker PickerInstance="@ViewModel.PickerDownstreamType" @bind-SelectedItem="@ViewModel.PickerDownstreamType.SelectedItem"/>;
+
+    private RenderFragment PredefinedMeasurementsRenderFragment =>
+        @<BxPicker PickerInstance="@ViewModel.PickerPredefinedMeasurements" @bind-SelectedItem="@ViewModel.PickerPredefinedMeasurements.SelectedItem"/>;
+
+    private RenderFragment ResearchInstituteAccessGrantedRenderFragment =>
+        @<RadzenSwitch @bind-Value="ViewModel.MeasurementDefinitionAssignment.AccessForResearchInstitutesGranted"/>;
+
+    private RenderFragment AdditionalSettingsRenderFragment =>
+        @<BxEntry ShowFrame="false" Entry="@ViewModel.EntryAdditionalProperties"/>;
+}

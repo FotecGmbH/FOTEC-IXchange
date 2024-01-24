@@ -1,0 +1,122 @@
+﻿<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewEditAboQ"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bcc="http://biss.schemas.com/corecontrols"
+    xmlns:connectivity="clr-namespace:BaseApp.Connectivity;assembly=BaseApp"
+    xmlns:controls="clr-namespace:BaseApp.View.Xamarin.Controls;assembly=BaseApp.View.Xamarin"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:markupExtensions="http://biss.schemas.com/markupextensions"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:modalVm="clr-namespace:BaseApp.ViewModel.ModalVM;assembly=BaseApp"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    xmlns:viewmodels="clr-namespace:BaseApp.ViewModel;assembly=BaseApp"
+    x:Name="ViewEditAboRef"
+    d:DataContext="{x:Static viewmodels:VmEditAbo.DesignInstance}"
+    x:TypeArguments="viewmodels:VmEditAbo"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl
+        x:Name="DetailPage"
+        DetailsViewHeaderText="Bewertungen"
+        ShowDetailPage="{Binding View.DetailView.Show}">
+        <bcc:PageControl.DetailView>
+            <bcc:BxDetailView x:TypeArguments="modalVm:VmRatingModal" DetailViewModel="{Binding DetailViewViewModel, Source={x:Reference DetailPage}}">
+                <Grid
+                    x:DataType="modalVm:VmRatingModal"
+                    RowDefinitions="Auto,*,Auto"
+                    RowSpacing="5">
+                    <Label FontSize="{StaticResource FontSizeLarge}" Text="{Binding MeasurementDefinition.Information.Name}" />
+                    <ListView Grid.Row="1" ItemsSource="{Binding Dc.DcExRatings}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="connectivity:DcListTypeRating">
+                                <ViewCell>
+                                    <Grid>
+                                        <StackLayout Spacing="10">
+                                            <StackLayout Spacing="3">
+                                                <controls:IxChangeRating ReadOnly="True" StarValue="{Binding Data.Rating}" />
+                                                <Label Text="{Binding Data.User.Fullname}" />
+                                            </StackLayout>
+                                            <Label Text="{Binding Data.Description}" />
+                                        </StackLayout>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <StackLayout
+                        Grid.Row="2"
+                        Padding="5"
+                        Spacing="5">
+                        <controls:IxChangeRating StarValue="{Binding OwnRatingDataPoint.Data.Rating}" />
+                        <Editor Placeholder="Bewertung eingeben" Text="{Binding OwnRatingDataPoint.Data.Description}" />
+                        <bcc:BxButton BissCommand="{Binding CmdSaveOwnRating}" Text="{Binding CmdSaveOwnRating.DisplayName}" />
+                    </StackLayout>
+                </Grid>
+            </bcc:BxDetailView>
+        </bcc:PageControl.DetailView>
+
+        <StackLayout Margin="8,0,8,4" Spacing="5">
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{markupExtensions:Translate ResViewEditAbo.LblName}" />
+                <Label Grid.Column="1" Text="{Binding Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information.Name}" />
+            </Grid>
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{markupExtensions:Translate ResViewEditAbo.LblDescription}" />
+                <Label Grid.Column="1" Text="{Binding Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information.Description}" />
+            </Grid>
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{markupExtensions:Translate ResViewEditAbo.LblType}" />
+                <Label Grid.Column="1" Text="{Binding Data.MeasurementDefinitionAssignment.Type, Converter={StaticResource ConverterEnumDisplayName}}" />
+            </Grid>
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{markupExtensions:Translate ResViewEditAbo.LblSensorConnection}" />
+                <Label Grid.Column="1" Text="{Binding Data.MeasurementDefinitionAssignment.MeasurementDefinition.DownstreamType, Converter={StaticResource ConverterEnumDisplayName}}" />
+            </Grid>
+            <Label Text="{markupExtensions:Translate ResViewEditAbo.LblMessagesFor}" />
+            <BoxView HeightRequest="1" Color="{StaticResource ColorSeperator}" />
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{markupExtensions:Translate ResViewEditAbo.LblExceedValue}" />
+                <StackLayout Grid.Column="1" Spacing="10">
+                    <CheckBox IsChecked="{Binding Data.ExceedNotify}" />
+                    <bcc:BxEntry EntryData="{Binding EntryExceedNotifyValue}" HasFrame="False" />
+                </StackLayout>
+            </Grid>
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{markupExtensions:Translate ResViewEditAbo.LblUndercutValue}" />
+                <StackLayout Grid.Column="1" Spacing="10">
+                    <CheckBox IsChecked="{Binding Data.UndercutNotify}" />
+                    <bcc:BxEntry EntryData="{Binding EntryUndercutNotifyValue}" HasFrame="False" />
+                </StackLayout>
+            </Grid>
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{markupExtensions:Translate ResViewEditAbo.LblFailureMinutes}" />
+                <StackLayout Grid.Column="1" Spacing="10">
+                    <CheckBox IsChecked="{Binding Data.FailureForMinutesNotify}" />
+                    <bcc:BxEntry EntryData="{Binding EntryFailureForMinutesNotifyValue}" HasFrame="False" />
+                </StackLayout>
+            </Grid>
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{markupExtensions:Translate ResViewEditAbo.LblMovingAverage}" />
+                <StackLayout Grid.Column="1" Spacing="10">
+                    <CheckBox IsChecked="{Binding Data.MovingAverageNotify}" />
+                    <bcc:BxEntry EntryData="{Binding EntryMovingAverageNotifyValue}" HasFrame="False" />
+                </StackLayout>
+            </Grid>
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{markupExtensions:Translate ResViewEditAbo.LblCostsValue}" />
+                <Label Grid.Column="1" Text="{Binding Data.MeasurementDefinitionAssignment.CostsAsString}" />
+            </Grid>
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="{markupExtensions:Translate ResViewEditAbo.LblRatings}" />
+                <StackLayout
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="5">
+                    <controls:IxChangeRating ReadOnly="False" StarValue="{Binding Data.MeasurementDefinitionAssignment.TotalRatingInt}" />
+                    <bcc:BxButton BissCommand="{Binding CmdOpenModal}" />
+                </StackLayout>
+            </Grid>
+        </StackLayout>
+    </bcc:PageControl>
+</view:BissContentPage>

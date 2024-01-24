@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewEditIotDevice"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:infrastructure="clr-namespace:BaseApp.ViewModel.Infrastructure;assembly=BaseApp"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resources="clr-namespace:Exchange.Resources;assembly=Exchange"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    x:Name="ViewEditIotDeviceRef"
+    d:DataContext="{x:Static infrastructure:VmEditIotDevice.DesignInstance}"
+    x:TypeArguments="infrastructure:VmEditIotDevice"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl>
+
+        <!--#region View Content-->
+        <ScrollView Margin="16,0,16,0">
+            <StackLayout Spacing="5">
+
+                <Label
+                    FontSize="{StaticResource FontSizeLarge}"
+                    HorizontalOptions="Center"
+                    Text="Stammdaten" />
+                <BoxView BackgroundColor="{StaticResource ColorSeperator}" HeightRequest="1" />
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{Binding EntryName.Title}" />
+                    <bcc:BxEntry
+                        Grid.Column="1"
+                        Margin="0,0,0,8"
+                        EntryData="{Binding EntryName}"
+                        HasFrame="False" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{Binding EntryDescription.Title}" />
+                    <bcc:BxEntry
+                        Grid.Column="1"
+                        Margin="0,0,0,8"
+                        EntryData="{Binding EntryDescription}"
+                        HasFrame="False" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditIotDevice.LblUpstream}" />
+                    <Grid Grid.Column="1" ColumnDefinitions="5*,*">
+                        <bcc:BxPicker ObservableCollectionSelectable="{Binding PickerUpstreamType}" />
+                        <bcc:BxGlyphButton
+                            Grid.Column="1"
+                            Command="{Binding ViewModel.CmdEditDynConfig, Source={x:Reference ViewEditIotDeviceRef}}"
+                            CommandParameter="{Binding}"
+                            Glyph="{Binding ViewModel.CmdEditDynConfig.Glyph, Source={x:Reference ViewEditIotDeviceRef}}"
+                            GlyphColor="Black"
+                            IsVisible="{Binding ShowCmdEditDynConfig}" />
+                    </Grid>
+                </Grid>
+                <bcc:BxCollapseView
+                    HeaderGlyph="{x:Static resources:Glyphs.Information_circle}"
+                    HeaderSubTitle="Informationen zum Upstream"
+                    HeaderTitle="Informationen zum Upstream">
+                    <Grid>
+                        <Label Text="{x:Static resources:ResViewEditIotDevice.Txt_UpstreamModal}" />
+                    </Grid>
+                </bcc:BxCollapseView>
+
+                <Grid IsVisible="{Binding ShowOpenSenseBoxIdEntry}">
+                    <StackLayout Spacing="5">
+                        <Grid ColumnDefinitions="*,*">
+                            <Label Style="{StaticResource LabelStyEditDescription}" Text="{Binding EntryOpensenseBoxId.Title}" />
+                            <bcc:BxEntry
+                                Grid.Column="1"
+                                Margin="0,0,0,8"
+                                EntryData="{Binding EntryOpensenseBoxId}"
+                                HasFrame="False" />
+                        </Grid>
+                        <bcc:BxCollapseView HeaderGlyph="{x:Static resources:Glyphs.Information_circle}" HeaderTitle="Secret Informationen">
+                            <Grid>
+                                <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditIotDevice.Txt_BoxIdInfoModal}" />
+                            </Grid>
+                        </bcc:BxCollapseView>
+                    </StackLayout>
+                </Grid>
+
+                <Grid IsVisible="{Binding ShowSecretEntry}" RowDefinitions="*,*,*">
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditIotDevice.LblSecretCheckBox}" />
+                        <CheckBox Grid.Column="1" IsChecked="{Binding EnterSecret}" />
+                    </Grid>
+                    <bcc:BxCollapseView
+                        Grid.Row="1"
+                        HeaderGlyph="{x:Static resources:Glyphs.Information_circle}"
+                        HeaderTitle="Secret Informationen">
+                        <Grid>
+                            <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditIotDevice.Txt_SecretModal}" />
+                        </Grid>
+                    </bcc:BxCollapseView>
+
+                    <Grid Grid.Row="2" ColumnDefinitions="*,*">
+                        <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditIotDevice.LblSecret}" />
+                        <bcc:BxEntry
+                            Grid.Column="1"
+                            EntryData="{Binding EnterSecret}"
+                            HasFrame="False"
+                            IsEnabled="{Binding EnterSecret}" />
+                    </Grid>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewIotDeviceDetails.LblLocalisation}" />
+                    <bcc:BxButton Grid.Column="1" BissCommand="{Binding CmdGetPositionFromMap}" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{Binding EntryPosLat.Title}" />
+                    <bcc:BxEntry
+                        Grid.Column="1"
+                        EntryData="{Binding EntryPosLat}"
+                        HasFrame="False" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="{Binding EntryPosLon.Title}" />
+                    <bcc:BxEntry
+                        Grid.Column="1"
+                        EntryData="{Binding EntryPosLon}"
+                        HasFrame="False" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*">
+                    <Label Style="{StaticResource LabelStyEditDescription}" Text="Advanced Mode" />
+                    <CheckBox Grid.Column="1" IsChecked="{Binding AdvancedMode}" />
+                </Grid>
+
+                <!--#region AdvancedMode-->
+                <StackLayout IsVisible="{Binding AdvancedMode}" Spacing="10">
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Style="{StaticResource LabelStyEditDescription}" Text="Gateway:" />
+                        <bcc:BxPicker Grid.Column="1" ObservableCollectionSelectable="{Binding PickerGateways}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Style="{StaticResource LabelStyEditDescription}" Text="Plattform:" />
+                        <bcc:BxPicker Grid.Column="1" ObservableCollectionSelectable="{Binding PickerPlattformType}" />
+                    </Grid>
+                    <bcc:BxCollapseView
+                        HeaderGlyph="{x:Static resources:Glyphs.Information_circle}"
+                        HeaderSubTitle="Informationen zu den untersützten Plattformen"
+                        HeaderTitle="Plattform-Informationen">
+                        <Grid>
+                            <StackLayout Spacing="10">
+                                <StackLayout Spacing="0">
+                                    <Label Text="{Binding DotnetHeader, Source={x:Reference ViewEditIotDeviceRef}}" />
+                                    <Label Text="{Binding PlattformText1, Source={x:Reference ViewEditIotDeviceRef}}" />
+                                </StackLayout>
+                                <StackLayout Spacing="0">
+                                    <Label Text="{Binding RaspberryHeader, Source={x:Reference ViewEditIotDeviceRef}}" />
+                                    <Label Text="{Binding PlattformText2, Source={x:Reference ViewEditIotDeviceRef}}" />
+                                </StackLayout>
+                                <StackLayout Spacing="0">
+                                    <Label Text="{Binding RaspberryHeader, Source={x:Reference ViewEditIotDeviceRef}}" />
+                                    <Label Text="{Binding PlattformText3, Source={x:Reference ViewEditIotDeviceRef}}" />
+                                </StackLayout>
+                                <StackLayout Spacing="0">
+                                    <Label Text="{Binding EspHeader, Source={x:Reference ViewEditIotDeviceRef}}" />
+                                    <Label Text="{Binding PlattformText4, Source={x:Reference ViewEditIotDeviceRef}}" />
+                                </StackLayout>
+                                <StackLayout Spacing="0">
+                                    <Label Text="{Binding PrebuiltHeader, Source={x:Reference ViewEditIotDeviceRef}}" />
+                                    <Label Text="{Binding PlattformText5, Source={x:Reference ViewEditIotDeviceRef}}" />
+                                </StackLayout>
+                            </StackLayout>
+                        </Grid>
+                    </bcc:BxCollapseView>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Style="{StaticResource LabelStyEditDescription}" Text="Übertragungsart:" />
+                        <bcc:BxPicker Grid.Column="1" ObservableCollectionSelectable="{Binding PickerTransmissionType}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*" IsVisible="{Binding ShowTransmissionIntervalEntry}">
+                        <Label Style="{StaticResource LabelStyEditDescription}" Text="{Binding EntryTransmissionInterval.Title}" />
+                        <bcc:BxEntry
+                            Grid.Column="1"
+                            EntryData="{Binding EntryTransmissionInterval}"
+                            HasFrame="False" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Style="{StaticResource LabelStyEditDescription}" Text="{Binding EntryMeasurmentInterval.Title}" />
+                        <bcc:BxEntry
+                            Grid.Column="1"
+                            EntryData="{Binding EntryMeasurmentInterval}"
+                            HasFrame="False" />
+                    </Grid>
+                    <StackLayout IsVisible="{Binding ShowConverterTypePicker}">
+                        <Grid ColumnDefinitions="*,*">
+                            <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditIotDevice.LblConverterType}" />
+                            <bcc:BxPicker ObservableCollectionSelectable="{Binding PickerConverter}" />
+                        </Grid>
+                        <bcc:BxCollapseView
+                            HeaderGlyph="{x:Static resources:Glyphs.Information_circle}"
+                            HeaderSubTitle="Informationen zu den untersützten Plattformen"
+                            HeaderTitle="Plattform-Informationen">
+                            <Grid>
+                                <StackLayout>
+                                    <Label FontSize="{StaticResource FontSizeLarge}" Text="{x:Static resources:ResViewEditIotDevice.LblConverterType}" />
+                                    <Label FontSize="{StaticResource FontSizeLarge}" Text="{x:Static resources:ResViewEditIotDevice.Txt_ConverterTypeModal}" />
+                                    <Image Source="{Binding SampleCodeUrl, Converter={StaticResource ConverterImage}}" />
+                                    <Label FontSize="{StaticResource FontSizeLarge}" Text="{x:Static resources:ResViewEditIotDevice.Txt_ConverterTypeModal_MeasurementNumber}" />
+                                    <Label FontSize="{StaticResource FontSizeLarge}" Text="{x:Static resources:ResViewEditIotDevice.Txt_ConverterTypeModal_MeasurementRaw}" />
+                                    <Label FontSize="{StaticResource FontSizeLarge}" Text="{x:Static resources:ResViewEditIotDevice.Txt_ConverterTypeModal_MeasurementText}" />
+                                    <Label FontSize="{StaticResource FontSizeLarge}" Text="{x:Static resources:ResViewEditIotDevice.Txt_ConverterTypeModal_MeasurementImage}" />
+                                    <Label FontSize="{StaticResource FontSizeLarge}" Text="{x:Static resources:ResViewEditIotDevice.Txt_ConverterTypeModal_MeasurementBool}" />
+
+                                </StackLayout>
+                            </Grid>
+                        </bcc:BxCollapseView>
+                        <Grid ColumnDefinitions="*,*" IsVisible="{Binding ShowCodeAreaEntry}">
+                            <bcc:BxEntry
+                                Grid.Column="1"
+                                EntryData="{Binding EntryUserCode}"
+                                HasFrame="False" />
+                        </Grid>
+                    </StackLayout>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Style="{StaticResource LabelStyEditDescription}" Text="{x:Static resources:ResViewEditIotDevice.LblPositionSource}" />
+                        <bcc:BxPicker Grid.Column="1" ObservableCollectionSelectable="{Binding PickerPositionType}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Style="{StaticResource LabelStyEditDescription}" Text="{Binding EntryAdditionalProperties.Title}" />
+                        <bcc:BxEntry
+                            Grid.Column="1"
+                            EntryData="{Binding EntryAdditionalProperties}"
+                            HasFrame="False" />
+                    </Grid>
+                </StackLayout>
+
+                <!--#endregion-->
+            </StackLayout>
+        </ScrollView>
+
+
+
+
+
+
+
+
+    </bcc:PageControl>
+</view:BissContentPage>

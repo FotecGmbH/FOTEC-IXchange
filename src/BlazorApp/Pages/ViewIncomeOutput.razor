@@ -1,0 +1,95 @@
+﻿@page "/viewincomeoutput"
+@page "/viewincomeoutput/{Id:int}"
+
+@using BlazorApp.Components
+@using BaseApp.Connectivity
+@inherits ProjectRazorPage<VmIncomeOutput>
+
+@if (ViewModel is not null)
+{
+    <RadzenStack Gap="20px">
+        <PageHeader Text="@ViewModel.PageTitle"/>
+
+        <RadzenCard>
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="3px">
+                    <BxIcon Glyph="@Glyphs.Diamond"/>
+                    <RadzenText Text="@($"{ResViewIncomeOutput.TxtCurrentCredit}: {ViewModel.LastIncomeOutput?.Data?.CurrentTotalIxiesCompleteString ?? $"0 {ResCommon.TxtIxies}"}")" TextStyle="TextStyle.H6"/>
+                </RadzenStack>
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="20px">
+                    <RadzenStack Orientation="Orientation.Horizontal" Gap="5px">
+                        <RadzenText Text="@ResViewIncomeOutput.TxtHowToCollectIxies" TextStyle="TextStyle.H6"/>
+                        <InfoIcon OnClick="ShowHowToCollectIxiesModal"/>
+                    </RadzenStack>
+                    <RadzenStack Orientation="Orientation.Horizontal" Gap="5px">
+                        <RadzenText Text="@ResViewIncomeOutput.TxtHowToSpendIxies" TextStyle="TextStyle.H6"/>
+                        <InfoIcon OnClick="ShowHowToSpendIxiesModal"/>
+                    </RadzenStack>
+                </RadzenStack>
+            </RadzenStack>
+        </RadzenCard>
+        <BxCollectionView Data="ViewModel.Dc.DcExIncomeOutput">
+            <Columns>
+                <RadzenDataGridColumn TItem="DcListTypeIncomeOutput"
+                                      Property="@($"{nameof(DcListTypeIncomeOutput.Data)}.{nameof(DcListTypeIncomeOutput.Data.IncomeOutputText)}")"/>
+                <RadzenDataGridColumn Title="@ResViewIncomeOutput.LblGridHeaderTimestamp"
+                                      TItem="DcListTypeIncomeOutput"
+                                      Property="@($"{nameof(DcListTypeIncomeOutput.Data)}.{nameof(DcListTypeIncomeOutput.Data.TimeStamp)}")" FormatString="{0:dd.MM.yyyy_hh:mm:ss}"/>
+                <RadzenDataGridColumn Title="@ResCommon.TxtIxies"
+                                      TItem="DcListTypeIncomeOutput"
+                                      Property="@($"{nameof(DcListTypeIncomeOutput.Data)}.{nameof(DcListTypeIncomeOutput.Data.IxiesFormattedString)}")"
+                                      FilterProperty="@($"{nameof(DcListTypeIncomeOutput.Data)}.{nameof(DcListTypeIncomeOutput.Data.Ixies)}")"
+                                      SortProperty="@($"{nameof(DcListTypeIncomeOutput.Data)}.{nameof(DcListTypeIncomeOutput.Data.Ixies)}")"
+                                      TextAlign="TextAlign.End"/>
+                <RadzenDataGridColumn Title="@ResViewIncomeOutput.LblColumnHeaderAnnotation"
+                                      TItem="DcListTypeIncomeOutput"
+                                      Property="@($"{nameof(DcListTypeIncomeOutput.Data)}.{nameof(DcListTypeIncomeOutput.Data.Description)}")"/>
+                <RadzenDataGridColumn Title="@ResViewIncomeOutput.LblColumnHeaderCredit"
+                                      TItem="DcListTypeIncomeOutput"
+                                      Property="@($"{nameof(DcListTypeIncomeOutput.Data)}.{nameof(DcListTypeIncomeOutput.Data.CurrentTotalIxiesCompleteString)}")"
+                                      Filterable="false"
+                                      Sortable="false"
+                                      TextAlign="TextAlign.End"/>
+            </Columns>
+        </BxCollectionView>
+    </RadzenStack>
+}
+
+@code
+{
+    private RenderFragment<DialogService> HowToCollectIxiesModal => ds =>
+        @<RadzenStack Gap="5px">
+            @if (ViewModel is not null)
+            {
+                foreach (var entry in ViewModel.HowToCollectIxiesItems)
+                {
+                    <RadzenRow>
+                        <RadzenColumn>
+                            <RadzenText Text="@entry.Key"/>
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            <RadzenText Text="@entry.Value"/>
+                        </RadzenColumn>
+                    </RadzenRow>
+                }
+            }
+    </RadzenStack>;
+
+    private RenderFragment<DialogService> HowToSpendIxiesModal => ds =>
+        @<RadzenStack Gap="5px">
+            @if (ViewModel is not null)
+            {
+                foreach (var entry in ViewModel.HowToSpendIxiesItems)
+                {
+                    <RadzenRow>
+                        <RadzenColumn>
+                            <RadzenText Text="@entry.Key"/>
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            <RadzenText Text="@entry.Value"/>
+                        </RadzenColumn>
+                    </RadzenRow>
+                }
+            }
+    </RadzenStack>;
+}

@@ -1,0 +1,14 @@
+﻿<div @onclick:stopPropagation="true" @onclick:preventDefault="true">
+    @ChildContent
+</div>
+
+@code {
+
+    /// <summary>
+    /// Kindelement -> onclick in diesem Element wird nicht weitergegeben -> verhindert onclick auf "darunter" liegende
+    /// Elemente
+    /// </summary>
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}

@@ -1,0 +1,41 @@
+﻿@page "/viewmyratings"
+@page "/viewmyratings/{Id:int}"
+@using Exchange.Extensions
+@using BlazorApp.Components
+@using BaseApp.Connectivity
+@inherits ProjectRazorPage<VmMyRatings>
+
+@if (ViewModel != null)
+{
+    <RadzenStack Gap="20px">
+        <PageHeader Text="@ViewModel.PageTitle"/>
+
+        <BxCollectionView Data="ViewModel.Dc.DcExRatings">
+            <Columns>
+                <RadzenDataGridColumn Title="@ResViewMyRatings.LblRating" TItem="DcListTypeRating">
+                    <Template>
+                        @{
+                            var maxStars = new IXChangeRating().Stars;
+                        }
+
+                        @context.Data.Rating / @maxStars
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn Title="@ResViewMyRatings.LblDescription" TItem="DcListTypeRating" Property="@($"{nameof(DcListTypeRating.Data)}.{nameof(DcListTypeRating.Data.Description)}")"/>
+                <RadzenDataGridColumn Title="@ResViewMyRatings.LblTimeStamp" TItem="DcListTypeRating" Property="@($"{nameof(DcListTypeRating.Data)}.{nameof(DcListTypeRating.Data.TimeStamp)}")"/>
+                <RadzenDataGridColumn Title="@ResViewMyRatings.LblSensor" TItem="DcListTypeRating" Property="@($"{nameof(DcListTypeRating.Data)}.{nameof(DcListTypeRating.Data.MeasurementDefinitionAssignment)}.{nameof(DcListTypeRating.Data.MeasurementDefinitionAssignment.MeasurementDefinition)}.{nameof(DcListTypeRating.Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information)}.{nameof(DcListTypeRating.Data.MeasurementDefinitionAssignment.MeasurementDefinition.Information.Name)}")"/>
+                <RadzenDataGridColumn Title="@ResViewMyRatings.LblMeasurementValue" TItem="DcListTypeRating" Property="@($"{nameof(DcListTypeRating.Data)}.{nameof(DcListTypeRating.Data.MeasurementDefinitionAssignment)}.{nameof(DcListTypeRating.Data.MeasurementDefinitionAssignment.Type)}")">
+                    <Template>
+                        @context.Data.MeasurementDefinitionAssignment.Type.GetDisplayName()
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="DcListTypeRating" Filterable="false" Sortable="false">
+                    <Template>
+                        <BxButton BissCommand="ViewModel.Dc.DcExRatings.CmdEditItem" ExecutionParameter="context" ButtonStyle="ButtonStyle.Primary" BxButtonType="EnumBxButtonType.JustGlyph"/>
+                        <BxButton BissCommand="ViewModel.Dc.DcExRatings.CmdRemoveItem" ExecutionParameter="context" BxButtonType="EnumBxButtonType.JustGlyph" ButtonStyle="ButtonStyle.Danger"/>
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </BxCollectionView>
+    </RadzenStack>
+}

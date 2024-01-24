@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<view:BissContentPage
+    x:Class="BaseApp.View.Xamarin.View.ViewMapFilter"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bcc="clr-namespace:Biss.Apps.XF.Controls;assembly=Biss.Apps.XF"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Exchange.Model;assembly=Exchange"
+    xmlns:view="clr-namespace:Biss.Apps.View;assembly=Biss.Apps.XF"
+    xmlns:viewmodels="clr-namespace:BaseApp.ViewModel;assembly=BaseApp"
+    d:DataContext="{x:Static viewmodels:VmMapFilter.DesignInstance}"
+    x:TypeArguments="viewmodels:VmMapFilter"
+    IsBusy="{Binding View.IsBusy}"
+    mc:Ignorable="d">
+    <bcc:PageControl>
+        <StackLayout Margin="8" BindableLayout.ItemsSource="{Binding FilterValues}">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="model:ExMapFilter">
+                    <Grid ColumnDefinitions="4*,*">
+                        <Label Text="{Binding MeasurementType, Converter={StaticResource ConverterEnumDisplayName}}" />
+                        <CheckBox Grid.Column="1" IsChecked="{Binding Shown}" />
+                    </Grid>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+    </bcc:PageControl>
+</view:BissContentPage>
