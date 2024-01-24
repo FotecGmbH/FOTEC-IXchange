@@ -25,7 +25,7 @@
  - Inbetriebnahme-View + Link zu Gateway und Konfiguration
 
 ## Version 1.0.4
- - Unterstützung Postgres Datenbank
+ - UnterstÃ¼tzung Postgres Datenbank
  - Android Applikation
 
 ## Version 1.0.3
@@ -33,14 +33,14 @@
  - WPF-Applikation
 
 ## Version 1.0.2
- - Background-worker Implementierung für Abonnements / IXie Transfer
- - Background-worker Implementierung für Notifizierungen
+ - Background-worker Implementierung fÃ¼r Abonnements / IXie Transfer
+ - Background-worker Implementierung fÃ¼r Notifizierungen
 
 ## Version 1.0.1
  - Datenbank Modelle adaptiert
- - Bewertungen hinzugefügt
- - Notifizierungen hinzugefügt
- - Abonnements hinzugefügt
+ - Bewertungen hinzugefÃ¼gt
+ - Notifizierungen hinzugefÃ¼gt
+ - Abonnements hinzugefÃ¼gt
 
 ## Version 1.0.0
  - Initiale Version IXchange (Blazor)
